@@ -16,9 +16,42 @@ class If {
     elseBody: List<Statement>
 }
 
+class Assignment {
+    leftExpression: Expression
+    rightExpression: Expression
+    ' Deben de poder ser evaluables
+}
+
+class Write {
+    expresions: List<Expression>
+}
+
+class Read {
+    expresions: List<Expression>
+}
+
+class While {
+    condition: Expression
+    body: List<Statement>
+}
+
+class Return {
+    returnExpresion: Expression
+}
+
+class Invocation {
+    argumentos: List<Statement>
+}
 
 ASTNode <|-- Statement
 Statement <|.. If
+Statement <|.. Assignment
+Statement <|.. Write
+Statement <|.. Read
+Statement <|.. While
+Statement <|.. Return
+Statement <|.. Invocation
+
 
 If o-- "1" Expression
 If o-- "0..n" Statement

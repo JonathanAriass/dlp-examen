@@ -8,13 +8,50 @@ interface ASTNode {
     getColumn(): int
 }
 
-interface Expression
+interface Expression {
+    type: Type
+}
 
 class IntLiteral {
     value: int
 }
 
+class DoubleLiteral {
+    value: double
+}
+
+class CharLiteral {
+    character: char
+}
+
+class Variable {
+    name: String
+    definition: Definition
+}
+
+class AritmeticOperation {
+    operator: String
+    leftExpression: Expression
+    rightExpression: Expression
+    ' Deben de poder ser evaluables
+}
+
+class Invocation {
+    argumentos: List<Expression>
+}
+
+class Cast {
+    castType: Type
+    exp: Expression
+}
+
 ASTNode <|-- Expression
 Expression <|.. IntLiteral
+Expression <|.. DoubleLiteral
+Expression <|.. CharLiteral
+Expression <|.. Variable
+Expression <|.. AritmeticOperation
+AritmeticOperation o-- "2" Expression
+Expression <|.. Cast
 
 @enduml

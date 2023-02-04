@@ -15,4 +15,38 @@ class IntType
 
 Type <|.. IntType
 
+class DoubleType
+
+Type <|.. DoubleType
+
+class CharType
+
+Type <|.. CharType
+
+class Array {
+    size: int
+    type: Type
+}
+
+Type <|.. Array
+
+class Structs {
+    secuence: List<Variable>
+}
+
+Type <|.. Structs
+
+class FuncType {
+    params: VarDefinition
+    returnType: Type
+}
+
+Type <|.. FuncType
+
+class Void {
+
+}
+
+Type <|.. Void
+
 @enduml
