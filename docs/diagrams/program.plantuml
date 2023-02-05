@@ -14,12 +14,12 @@ interface Definition {
     type: Type
 }
 
-class VarDefinition {
+class VarDefinition implements Definition {
     name: String
 
 }
 
-class FunctionDefinition {
+class FunctionDefinition implements Definition {
     name: String
     varDefinitions: VarDefinition
     statements: statement
@@ -28,5 +28,8 @@ class FunctionDefinition {
 
 
 ASTNode <|.. Program
+Program o-- "0..*" Definition
+
+
 
 @enduml
