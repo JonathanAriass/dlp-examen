@@ -45,6 +45,17 @@ class Cast {
     exp: Expression
 }
 
+class Logical implements Expression {
+    operator: String
+}
+
+class ArrayAccess implements Expression {
+}
+
+class FieldAccess implements Expression {
+    field: String
+}
+
 ASTNode <|-- Expression
 Expression <|.. IntLiteral
 Expression <|.. DoubleLiteral
