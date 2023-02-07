@@ -56,6 +56,16 @@ class FieldAccess implements Expression {
     field: String
 }
 
+class UnaryMinus implements Expression {}
+
+class Negation implements Expression {}
+
+class LogicalOperation implements Expression {
+    operation: String
+    leftExpression: Expression
+    rightExpression: Expression
+}
+
 ASTNode <|-- Expression
 Expression <|.. IntLiteral
 Expression <|.. DoubleLiteral

@@ -21,8 +21,8 @@ class VarDefinition implements Definition {
 
 class FunctionDefinition implements Definition {
     name: String
-    varDefinitions: VarDefinition
-    statements: statement
+    varDefinitions: List<VarDefinition>
+    statements: List<Statement>
     type: FuncType
 }
 

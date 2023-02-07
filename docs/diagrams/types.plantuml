@@ -31,8 +31,10 @@ class Array {
 Type <|.. Array
 
 class Structs {
-    secuence: List<Variable>
+    fields: List<StructFields>
 }
+
+class StructFields implements Type {}
 
 Type <|.. Structs
 
