@@ -23,11 +23,11 @@ class Assignment {
 }
 
 class Write {
-    expresions: List<Expression>
+    expresion: Expression
 }
 
 class Read {
-    expresions: List<Expression>
+    expresion: Expression
 }
 
 class While {

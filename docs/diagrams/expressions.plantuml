@@ -36,6 +36,19 @@ class AritmeticOperation {
     ' Deben de poder ser evaluables
 }
 
+class LogicalOperation implements Expression {
+    operation: String
+    leftExpression: Expression
+    rightExpression: Expression
+'    En este caso deben de ser enteron para poder funcionar
+}
+
+class ComparisonOperation implements Expression {
+    operation: String
+    leftExpression: Expression
+    rightExpression: Expression
+}
+
 class Invocation implements Expression {
     argumentos: List<Expression>
 }
@@ -60,11 +73,6 @@ class UnaryMinus implements Expression {}
 
 class Negation implements Expression {}
 
-class LogicalOperation implements Expression {
-    operation: String
-    leftExpression: Expression
-    rightExpression: Expression
-}
 
 ASTNode <|-- Expression
 Expression <|.. IntLiteral

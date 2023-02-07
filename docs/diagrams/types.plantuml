@@ -34,7 +34,12 @@ class Structs {
     fields: List<StructFields>
 }
 
-class StructFields implements Type {}
+Structs  --o "0.*" StructFields
+
+class StructFields implements Type {
+    name: String
+    type: Type
+}
 
 Type <|.. Structs
 

@@ -11,19 +11,23 @@ interface ASTNode {
 class Program
 
 interface Definition {
+}
+
+abstract class AbstractDefinition implements Definition {
+    name: String
     type: Type
 }
 
-class VarDefinition implements Definition {
+
+class VarDefinition extends AbstractDefinition {
     name: String
 
 }
 
-class FunctionDefinition implements Definition {
+class FunctionDefinition extends AbstractDefinition {
     name: String
     varDefinitions: List<VarDefinition>
     statements: List<Statement>
-    type: FuncType
 }
 
 
