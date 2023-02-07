@@ -4,16 +4,20 @@
 
 Depende de la implementación de Java que desees:
 
-- Desde la página de Oracle puedes descargar el Zip o el instalador [aquí](https://www.oracle.com/java/technologies/downloads/).
-- Si prefieres usar OpenJDK, puedes descargarlo [aquí](https://jdk.java.net/17/). No olvides de crear las variables de entorno correspondientes (`JAVA_HOME` y la carpeta de binarios al `Path`) a donde exportes la carpeta.
+- Desde la página de Oracle puedes descargar el Zip o el
+  instalador [aquí](https://www.oracle.com/java/technologies/downloads/).
+- Si prefieres usar OpenJDK, puedes descargarlo [aquí](https://jdk.java.net/17/). No olvides de crear las variables de
+  entorno correspondientes (`JAVA_HOME` y la carpeta de binarios al `Path`) a donde exportes la carpeta.
 
 > Si tienes macOS o Linux, recomiendo usar [asdf](https://github.com/asdf-vm/asdf) e instalar [el plugin de java](https://github.com/halcyon/asdf-java). Recuerda configurar la última versión.
 
 ## Dónde puedo descargar Maven
 
-Dentro de [su página de descargas](https://maven.apache.org/download.cgi), descarga el binario y extráelo en la carpeta que quieras.
+Dentro de [su página de descargas](https://maven.apache.org/download.cgi), descarga el binario y extráelo en la carpeta
+que quieras.
 
-Al igual que Java, acuérdate de añadir ese binario a la variable de entorno `Path`. Importante, también necesitas tener bien configurada la variable `JAVA_HOME` para que Maven sepa que versión de Java usar.
+Al igual que Java, acuérdate de añadir ese binario a la variable de entorno `Path`. Importante, también necesitas tener
+bien configurada la variable `JAVA_HOME` para que Maven sepa que versión de Java usar.
 
 Más información sobre la instalación [aquí](https://maven.apache.org/install.html).
 
@@ -21,7 +25,8 @@ Más información sobre la instalación [aquí](https://maven.apache.org/install
 
 ## PlantUML me da fallos
 
-Si al generar el diagrama te da fallos, puede ser porque no tengas Graphviz instalado. Prueba a descargarlo [aquí](https://graphviz.org/download/).
+Si al generar el diagrama te da fallos, puede ser porque no tengas Graphviz instalado. Prueba a
+descargarlo [aquí](https://graphviz.org/download/).
 
 > Si tienes macOS instala primero [Homebrew](https://brew.sh/) y luego [graphviz](https://formulae.brew.sh/formula/graphviz)
 
@@ -58,7 +63,23 @@ git merge upstream/main
 Si quieres ejecutar solo un método con maven, después de regenerar el parser, puedes lanzar el comando:
 
 ```
- mvn clean antlr4:antlr4 test -Dtest=ParserTest#testFunctionInvalidReturnType
+mvn clean antlr4:antlr4 test -Dtest=ParserTest#testFunctionInvalidReturnType
 ```
 
-La parte importante es `-Dtest=ParserTest#testFunctionInvalidReturnType`, donde `ParserTest` es la clase del test a ejecutar y `testFunctionInvalidReturnType` el test en específico.
+La parte importante es `-Dtest=ParserTest#testFunctionInvalidReturnType`, donde `ParserTest` es la clase del test a
+ejecutar y `testFunctionInvalidReturnType` el test en específico.
+
+## Cómo formatear el código
+
+Dentro del pom, tenemos añadido el plugin [Java Formatter de Spotify](https://github.com/spotify/fmt-maven-plugin), que
+nos ajusta el código a [la guía de estilo de Google para Java](https://google.github.io/styleguide/javaguide.html).
+
+Para formatear desde IntelliJ, podemos usar [este plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format).
+Una vez instalado, para activarlo vamos a `File > Settings > google-java-format Settings` y
+seleccionamos `Enable google-java-format`.
+
+Desde consola podemos ejecutar el siguiente comando:
+
+```
+mvn com.spotify.fmt:fmt-maven-plugin:format
+```
