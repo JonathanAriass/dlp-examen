@@ -1,4 +1,7 @@
-package es.uniovi.dlp.ast;
+package es.uniovi.dlp.ast.definitions;
+
+import es.uniovi.dlp.ast.AbstractDefinition;
+import es.uniovi.dlp.ast.Type;
 
 public class VarDefinition extends AbstractDefinition {
 

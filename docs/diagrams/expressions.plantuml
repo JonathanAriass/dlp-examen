@@ -9,6 +9,9 @@ interface ASTNode {
 }
 
 interface Expression {
+}
+
+abstract AbstractExpression implements Expression {
     type: Type
 }
 
@@ -36,20 +39,20 @@ class AritmeticOperation {
     ' Deben de poder ser evaluables
 }
 
-class LogicalOperation implements Expression {
+class LogicalOperation extends AbstractExpression {
     operation: String
     leftExpression: Expression
     rightExpression: Expression
 '    En este caso deben de ser enteron para poder funcionar
 }
 
-class ComparisonOperation implements Expression {
+class ComparisonOperation extends AbstractExpression {
     operation: String
     leftExpression: Expression
     rightExpression: Expression
 }
 
-class Invocation implements Expression {
+class Invocation extends AbstractExpression {
     argumentos: List<Expression>
 }
 
@@ -58,29 +61,29 @@ class Cast {
     exp: Expression
 }
 
-class Logical implements Expression {
+class Logical extends AbstractExpression {
     operator: String
 }
 
-class ArrayAccess implements Expression {
+class ArrayAccess extends AbstractExpression {
 }
 
-class FieldAccess implements Expression {
+class FieldAccess extends AbstractExpression {
     field: String
 }
 
-class UnaryMinus implements Expression {}
+class UnaryMinus extends AbstractExpression {}
 
-class Negation implements Expression {}
+class Negation extends AbstractExpression {}
 
 
 ASTNode <|-- Expression
-Expression <|.. IntLiteral
-Expression <|.. DoubleLiteral
-Expression <|.. CharLiteral
-Expression <|.. Variable
-Expression <|.. AritmeticOperation
+AbstractExpression <|-- IntLiteral
+AbstractExpression <|-- DoubleLiteral
+AbstractExpression <|-- CharLiteral
+AbstractExpression <|-- Variable
+AbstractExpression <|-- AritmeticOperation
 AritmeticOperation o-- "2" Expression
-Expression <|.. Cast
+AbstractExpression <|-- Cast
 
 @enduml

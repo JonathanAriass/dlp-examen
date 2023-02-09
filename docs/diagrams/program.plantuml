@@ -10,7 +10,7 @@ interface ASTNode {
 
 class Program
 
-interface Definition {
+interface Definition extends ASTNode{
 }
 
 abstract class AbstractDefinition implements Definition {
@@ -20,12 +20,9 @@ abstract class AbstractDefinition implements Definition {
 
 
 class VarDefinition extends AbstractDefinition {
-    name: String
-
 }
 
 class FunctionDefinition extends AbstractDefinition {
-    name: String
     varDefinitions: List<VarDefinition>
     statements: List<Statement>
 }
@@ -33,6 +30,10 @@ class FunctionDefinition extends AbstractDefinition {
 
 ASTNode <|.. Program
 Program o-- "0..*" Definition
+VarDefinition "0..*" --o FunctionDefinition
+Statement "0..*" --o FunctionDefinition
+Type "1" --o AbstractDefinition
+
 
 
 

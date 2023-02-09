@@ -34,7 +34,7 @@ class Structs {
     fields: List<StructFields>
 }
 
-Structs  --o "0.*" StructFields
+Structs  o-- "0.*" StructFields
 
 class StructFields implements Type {
     name: String
