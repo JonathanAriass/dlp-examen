@@ -11,49 +11,53 @@ interface Type
 
 ASTNode <|-- Type
 
+abstract AbstractType
+
+Type <|.. AbstractType
+
 class IntType
 
-Type <|.. IntType
+AbstractType <|.. IntType
 
 class DoubleType
 
-Type <|.. DoubleType
+AbstractType <|.. DoubleType
 
 class CharType
 
-Type <|.. CharType
+AbstractType <|.. CharType
 
 class Array {
     size: int
     type: Type
 }
 
-Type <|.. Array
+AbstractType <|.. Array
 
-class Structs {
+class Struct {
     fields: List<StructFields>
 }
 
-Structs  o-- "0.*" StructFields
+Struct  o-- "0.*" StructFields
 
-class StructFields implements Type {
+class StructFields implements AbstractType {
     name: String
     type: Type
 }
 
-Type <|.. Structs
+AbstractType <|.. Struct
 
 class FuncType {
     params: VarDefinition
     returnType: Type
 }
 
-Type <|.. FuncType
+AbstractType <|.. FuncType
 
-class Void {
+class VoidType {
 
 }
 
-Type <|.. Void
+AbstractType <|.. VoidType
 
 @enduml

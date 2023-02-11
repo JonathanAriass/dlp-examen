@@ -102,10 +102,8 @@ Invocation o-- "0..*" Expression
 ArrayAccess o-- "2" Expression
 AbstractExpression <|-- Cast
 
-class Definition {}
+' TIPS: Not needed to define class in PlantUML to make a diagram
 Variable o-- "1" Definition
-
-class Type {}
 Cast o-- "1" Type
 
 @enduml
