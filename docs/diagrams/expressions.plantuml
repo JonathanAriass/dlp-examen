@@ -61,20 +61,28 @@ class Cast {
     exp: Expression
 }
 
-class Logical extends AbstractExpression {
-    operator: String
-}
+' I don't know if this is the same as LogicalOperation
+'class Logical extends AbstractExpression {
+'    operator: String
+'}
 
 class ArrayAccess extends AbstractExpression {
+    array: Expression
+    index: Expression
 }
 
 class FieldAccess extends AbstractExpression {
     field: String
+    exp: Expression
 }
 
-class UnaryMinus extends AbstractExpression {}
+class UnaryMinus extends AbstractExpression {
+    exp: Expression
+}
 
-class Negation extends AbstractExpression {}
+class Negation extends AbstractExpression {
+    exp: Expression
+}
 
 
 ASTNode <|-- Expression
@@ -84,6 +92,20 @@ AbstractExpression <|-- CharLiteral
 AbstractExpression <|-- Variable
 AbstractExpression <|-- AritmeticOperation
 AritmeticOperation o-- "2" Expression
+LogicalOperation o-- "2" Expression
+ComparisonOperation o-- "2" Expression
+Negation o-- "1" Expression
+UnaryMinus o-- "1" Expression
+Cast o-- "1" Expression
+FieldAccess o-- "1" Expression
+Invocation o-- "0..*" Expression
+ArrayAccess o-- "2" Expression
 AbstractExpression <|-- Cast
+
+class Definition {}
+Variable o-- "1" Definition
+
+class Type {}
+Cast o-- "1" Type
 
 @enduml
