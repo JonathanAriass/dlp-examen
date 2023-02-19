@@ -5,13 +5,14 @@ import es.uniovi.dlp.ast.Expression;
 
 public class Negation extends AbstractExpression {
 
-    private Expression expression;
+  private Expression expression;
 
-    public Negation(Expression expression, int line, int column) {
-        super(line, column);
-        this.expression = expression;
-    }
+  public Negation(Expression expression, int line, int column) {
+    super(line, column);
+    this.expression = expression;
+  }
 
-    public Expression getExpression() { return this.expression; }
-
+  public Expression getExpression() {
+    return this.expression;
+  }
 }

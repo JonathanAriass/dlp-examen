@@ -5,16 +5,20 @@ import es.uniovi.dlp.ast.Expression;
 
 public class FieldAccess extends AbstractExpression {
 
-    private String field;
-    private Expression expression;
+  private String field;
+  private Expression expression;
 
-    public FieldAccess(String field, Expression expression, int line, int column) {
-        super(line, column);
-        this.field = field;
-        this.expression = expression;
-    }
+  public FieldAccess(String field, Expression expression, int line, int column) {
+    super(line, column);
+    this.field = field;
+    this.expression = expression;
+  }
 
-    public String getField() { return field; }
+  public String getField() {
+    return field;
+  }
 
-    public Expression getExpression() { return expression; }
+  public Expression getExpression() {
+    return expression;
+  }
 }

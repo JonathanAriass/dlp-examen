@@ -4,8 +4,7 @@ import es.uniovi.dlp.ast.AbstractType;
 
 public class VoidType extends AbstractType {
 
-
-    public VoidType(int line, int column) {
-        super(line, column);
-    }
+  public VoidType(int line, int column) {
+    super(line, column);
+  }
 }

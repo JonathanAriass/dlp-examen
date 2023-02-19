@@ -5,13 +5,14 @@ import es.uniovi.dlp.ast.Expression;
 
 public class Return extends AbstractStatement {
 
-    private Expression returnExpression;
+  private Expression returnExpression;
 
-    public Return(Expression ret, int line, int column) {
-        super(line, column);
-        this.returnExpression = ret;
-    }
+  public Return(Expression ret, int line, int column) {
+    super(line, column);
+    this.returnExpression = ret;
+  }
 
-    public Expression getReturnExpression() { return this.returnExpression; }
-
+  public Expression getReturnExpression() {
+    return this.returnExpression;
+  }
 }

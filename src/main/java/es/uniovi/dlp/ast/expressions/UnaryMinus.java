@@ -5,12 +5,14 @@ import es.uniovi.dlp.ast.Expression;
 
 public class UnaryMinus extends AbstractExpression {
 
-    private Expression expression;
+  private Expression expression;
 
-    public UnaryMinus(Expression expression, int line, int column) {
-        super(line, column);
-        this.expression = expression;
-    }
+  public UnaryMinus(Expression expression, int line, int column) {
+    super(line, column);
+    this.expression = expression;
+  }
 
-    public Expression getExpression() { return expression; }
+  public Expression getExpression() {
+    return expression;
+  }
 }

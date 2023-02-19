@@ -5,10 +5,9 @@ import java.util.List;
 
 public class Program {
 
-    private List<Definition> definitions;
+  private List<Definition> definitions;
 
-    public Program() {
-        this.definitions = new ArrayList<Definition>();
-    }
-
+  public Program() {
+    this.definitions = new ArrayList<Definition>();
+  }
 }
