@@ -7,6 +7,8 @@ package es.uniovi.dlp.parser;
 
 program: INT_CONSTANT;
 
+// Pagina para visualizar el arbol lexer: http://lab.antlr.org/
+
 // Con fragment podemos definir un nombre en antlr4 y asi dejar el codigo mas entendible
 fragment
 INT: [0-9]+;
