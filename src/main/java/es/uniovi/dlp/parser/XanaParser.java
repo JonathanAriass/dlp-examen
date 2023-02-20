@@ -21,7 +21,8 @@ public class XanaParser extends Parser {
       ID = 3,
       CHAR_CONSTANT = 4,
       COMENTARIO_SIMPLE = 5,
-      COMENTARIO_MULTILINEA = 6;
+      COMENTARIO_MULTILINEA = 6,
+      TRASH = 7;
   public static final int RULE_program = 0;
 
   private static String[] makeRuleNames() {
@@ -44,7 +45,8 @@ public class XanaParser extends Parser {
       "ID",
       "CHAR_CONSTANT",
       "COMENTARIO_SIMPLE",
-      "COMENTARIO_MULTILINEA"
+      "COMENTARIO_MULTILINEA",
+      "TRASH"
     };
   }
 
@@ -142,7 +144,7 @@ public class XanaParser extends Parser {
   }
 
   public static final String _serializedATN =
-      "\u0004\u0001\u0006\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"
+      "\u0004\u0001\u0007\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"
           + "\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0002\u0001"
           + "\u0000\u0000\u0000\u0002\u0003\u0005\u0001\u0000\u0000\u0003\u0001\u0001"
           + "\u0000\u0000\u0000\u0000";

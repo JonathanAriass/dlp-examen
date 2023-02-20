@@ -21,11 +21,11 @@ public class LexerHelper {
 
   public static char lexemeToChar(String lexeme) {
     if (lexeme.charAt(1) == '\\') {
-      switch (lexeme.charAt(2)) {
-        case 't':
-          return '\t';
-        case 'n':
-          return '\n';
+      if (lexeme.charAt(2) == 't') {
+        return '\t';
+      }
+      if (lexeme.charAt(2) == 'n') {
+        return '\n';
       }
       // Caso de que sea codigo ascii
       return (char) Integer.parseInt(lexeme.substring(2, lexeme.length() - 1));

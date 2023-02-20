@@ -13,13 +13,15 @@ INT: [0-9]+;
 INT_CONSTANT: INT;
 
 fragment
-REAL: [.][0-9]+ | [0-9]+[.][0-9-]+;
-REAL_CONSTANT: REAL | REAL [E-][0-9]+ | [0-9]+[e+][0-9]+ | [0-9]+[e-][0-9]+;
+REAL: [.][0-9]+ | [0-9]+[.][0-9-]+ | [0-9]+[.];
+REAL_CONSTANT: REAL | REAL'E'('+'|'-')?[0-9]+ | REAL'E'('+'|'-')?REAL_CONSTANT | [0-9]+[e+][0-9]+ | [0-9]+[e-][0-9]+;
 
-ID: [a-zA-Z][0-9a-zA-Z_]*;
+ID: [a-zA-Z_][0-9a-zA-Z_]*;
 
 CHAR_CONSTANT: '\''.'\'' | '\'\\'(INT | [nt])'\'';
 
 // Con el operador ? lo que trabajamos es con la version non-greedy del '*'
-COMENTARIO_SIMPLE: '#' .*? '\n' -> skip;
+COMENTARIO_SIMPLE: ('#' .*? ('\n' | EOF)) -> skip;
 COMENTARIO_MULTILINEA: '"""' .*? '"""' -> skip;
+
+TRASH: [ \t\r\n] -> skip;
