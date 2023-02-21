@@ -24,7 +24,7 @@ class VarDefinition extends AbstractDefinition {
 
 class FunctionDefinition extends AbstractDefinition {
     varDefinitions: List<VarDefinition>
-    statements: List<Statement>
+    paramList: List<Statement>
 }
 
 
