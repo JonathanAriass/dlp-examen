@@ -22,9 +22,9 @@ paramList: (param (',' param)*)?;
 
 param: ID '::' simpleType;
 
-function_invocation: ID '(' paramList ')';
+function_invocation: ID '(' argument ')';
 
-argument: ; // puede ser numeros mirar /function_invocations.xana
+argument: (expression(',' expression)*)?;
 
 simpleType: 'int' | 'double' | 'char';
 
