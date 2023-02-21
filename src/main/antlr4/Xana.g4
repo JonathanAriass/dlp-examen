@@ -12,7 +12,7 @@ def_variables: ID (',' ID)* '::' type; // esta deberia de usar el type no simple
 
 type: simpleType
         | '[' INT_CONSTANT '::' type ']'
-        | 'defstruct' 'do' structFields 'end';
+        | 'defstruct' 'do' structFields* 'end';
 
 structFields: def_variables;
 
@@ -22,11 +22,16 @@ paramList: (param (',' param)*)?;
 
 param: ID '::' simpleType;
 
+function_invocation: ID '(' paramList ')';
+
+argument: ; // puede ser numeros mirar /function_invocations.xana
+
 simpleType: 'int' | 'double' | 'char';
 
 returnType: 'void' | simpleType;
 
-statement:  'if' expression 'do' statement* ('else' statement*)? 'end'
+statement:  function_invocation
+            |'if' expression 'do' statement* ('else' statement*)? 'end'
             | 'in' expression (',' expression)*
             | 'puts' expression (',' expression)*
             | expression '=' expression
@@ -34,11 +39,21 @@ statement:  'if' expression 'do' statement* ('else' statement*)? 'end'
             | ID '(' (statement(',' statement)*)? ')'
             | 'return' expression;
 
-expression: ID
+expression: function_invocation
+            | '(' expression ')'
+            | expression '[' expression ']'
+            | expression '.' ID
+            | expression 'as' simpleType
+            | '-' expression
+            | '!' expression
+            | expression ('*' | '/' | '%') expression
+            | expression ('+' | '-') expression
+            | expression ('>' | '>=' | '<' | '<=' | '!=' | '==') expression
+            | expression ('&&' | '||') expression
+            | ID
             | INT_CONSTANT
             | REAL_CONSTANT
-            | CHAR_CONSTANT
-            | '-'expression;
+            | CHAR_CONSTANT;
 
 def_main: 'def' 'main' '(' ')' 'do' (def_variables | statement)* 'end';
 
