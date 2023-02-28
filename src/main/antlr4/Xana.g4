@@ -5,6 +5,10 @@ grammar Xana;
 package es.uniovi.dlp.parser;
 
 import es.uniovi.dlp.ast.*;
+import es.uniovi.dlp.ast.definitions.*;
+import es.uniovi.dlp.ast.expressions.*;
+import es.uniovi.dlp.ast.statements.*;
+import es.uniovi.dlp.ast.types.*;
 }
 
 // Gramatica
@@ -41,24 +45,35 @@ type returns[Type ast]:
 
 structFields returns[List<StructFields> ast = new ArrayList<>()]:
     ids+=ID (',' ids+=ID)* '::' type {
-        for (var id : $ids.ast) {
+        for (var id : $ids) {
            $ast.add(new StructFields(id.getName(), $type.ast, $start.getLine(), $start.getCharPositionInLine() + 1));
         }
     };
 
 def_functions returns[FunctionDefinition ast]:
-    'def' ident=ID '(' paramList ')' '::' returnType 'do' def_variables* statement* 'end';
-//    {
-//        List<Statement> statements = new ArrayList<>();
-//        // Los statements sera mejor crearlos como una lista por eso accedemos al statement.ast
-//        for (var statement : $statements.ast) {
-//            statements.addAll(statement.ast);
-//        }
-//
-//        $ast = new FunctionDefinition($ident.text, );
-//    };
+    'def' ident=ID '(' paramList ')' '::' returnType 'do' def_variables* statement* 'end'
+    {
+        FunType funType = new FunType($paramList.ast, $returnType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);
+        List<Statement> statements = new ArrayList<>();
+        // Los statements sera mejor crearlos como una lista por eso accedemos al statement.ast
+        for (var statement : $statements.ast) {
+            statements.addAll(statement.ast);
+        }
 
-paramList: (param (',' param)*)?;
+        List<VarDefinition> varDefinitions = new ArrayList<>();
+        for (var varDefinition : $def_variables) {
+            varDefinitions.addAll(varDefinition.ast);
+        }
+
+        $ast = new FunctionDefinition($ident.text, funType, varDefinitions, statements, $start.getLine(), $start.getCharPositionInLine() + 1);
+    };
+
+paramList returns[List<VarDefinition> ast = new ArrayList<>();]:
+    (list+=param (',' list+=param)*)? {
+        for (var param : $list) {
+            $ast.add(param.ast);
+        }
+    };
 
 param returns[VarDefinition ast]:
     ident=ID '::' simpleType {$ast = new VarDefinition($ident.text, $simpleType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);};
@@ -101,7 +116,23 @@ expression: function_invocation
             | REAL_CONSTANT
             | CHAR_CONSTANT;
 
-def_main: 'def' 'main' '(' ')' 'do' (def_variables | statement)* 'end';
+def_main returns[FunctionDefinition ast]:
+    'def' 'main' '(' ')' 'do' (vars+=def_variables | stmnts+=statement)* 'end'
+    {
+        FunType funType = new FunType(new ArrayList<>(), new VoidType(0, 0), $start.getLine(), $start.getCharPositionInLine() + 1);
+
+        List<VarDefinition> varDefinitions = new ArrayList<>();
+        for (var varDefinition : $vars) {
+            varDefinition.addAll(varDefinition.ast);
+        }
+
+        List<Statement> statements = new ArrayList<>();
+        for (var statement : $stmnts) {
+            statements.addAll(statement.ast);
+        }
+
+        $ast = new FunctionDefinition("main", varDefinitions, statements, $start.getLine(), $start.getCharPositionInLine() + 1);
+    };
 
 // Pagina para visualizar el arbol lexer: http://lab.antlr.org/
 
