@@ -11,9 +11,20 @@ public class FunctionDefinition extends AbstractDefinition {
   private List<VarDefinition> varDefinitionList;
   private List<Statement> statementsList;
 
-  public FunctionDefinition(String name, Type type, int line, int column) {
+  public FunctionDefinition(String name, Type type, List<VarDefinition> varDefinitions,
+                            List<Statement> statementsList, int line, int column) {
     super(name, type, line, column);
-    this.varDefinitionList = new ArrayList<VarDefinition>();
-    this.statementsList = new ArrayList<Statement>();
+    this.varDefinitionList = varDefinitions;
+    this.statementsList = statementsList;
   }
+
+  public List<VarDefinition> getVarDefinitionList() {
+    return new ArrayList<>(varDefinitionList);
+  }
+
+  public List<Statement> getStatementsList() {
+    return new ArrayList<>(statementsList);
+  }
+
+
 }

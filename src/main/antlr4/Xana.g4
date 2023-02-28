@@ -1,34 +1,80 @@
 grammar Xana;
 
-
+// Definimos el import para poder hacer el return y la instancia de las diferentes clases
 @header {
 package es.uniovi.dlp.parser;
+
+import es.uniovi.dlp.ast.*;
 }
 
 // Gramatica
-program: def_variables* def_functions* def_main;
+program returns[Programa ast]:
+    vars+=def_variables* funcs+=def_functions* def_main {
+        List<Definition> defs = new ArrayList<Definition>();
+        for (var variable : $vars) {
+            defs.addAll(variable.ast);
+        }
+        for (var function : $funcs) {
+            defs.addAll(function.ast);
+        }
+        defs.add($def_main.ast);
+        $ast = new Programa(defs, $start.getLine(), $start.getCharPositionInLine() + 1);
+    };
 
-def_variables: ID (',' ID)* '::' type; // esta deberia de usar el type no simpleType
+def_variables returns[List<VarDefinition> ast = new ArrayList<>()]:
+    ids+=ID (',' ids+=ID)* '::' type {
+        for (var id : $ids) {
+            $ast.add(new VarDefinition(id.getText(), $type.ast, id.getLine(), id.getCharPositionInLine() + 1));
+        }
+    };
 
-type: simpleType
-        | '[' INT_CONSTANT '::' type ']'
-        | 'defstruct' 'do' structFields* 'end';
+type returns[Type ast]:
+        simpleType {$ast = $simpleType.ast;}
+        | '[' size=INT_CONSTANT '::' type ']' {$ast = new Array($size.text, $type.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
+        | 'defstruct' 'do' fields+=structFields* 'end' {
+            List<StructFields> fields = new ArrayList<StructFields>();
+            for (var field : $fields) {
+                fields.addAll(field.ast);
+            }
+            $ast = new Struct(fields, $start.getLine(), $start.getCharPositionInLine() + 1);
+        };
 
-structFields: def_variables;
+structFields returns[List<StructFields> ast = new ArrayList<>()]:
+    ids+=ID (',' ids+=ID)* '::' type {
+        for (var id : $ids.ast) {
+           $ast.add(new StructFields(id.getName(), $type.ast, $start.getLine(), $start.getCharPositionInLine() + 1));
+        }
+    };
 
-def_functions: 'def' ID '(' paramList ')' '::' returnType 'do' def_variables* statement* 'end';
+def_functions returns[FunctionDefinition ast]:
+    'def' ident=ID '(' paramList ')' '::' returnType 'do' def_variables* statement* 'end';
+//    {
+//        List<Statement> statements = new ArrayList<>();
+//        // Los statements sera mejor crearlos como una lista por eso accedemos al statement.ast
+//        for (var statement : $statements.ast) {
+//            statements.addAll(statement.ast);
+//        }
+//
+//        $ast = new FunctionDefinition($ident.text, );
+//    };
 
 paramList: (param (',' param)*)?;
 
-param: ID '::' simpleType;
+param returns[VarDefinition ast]:
+    ident=ID '::' simpleType {$ast = new VarDefinition($ident.text, $simpleType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);};
 
 function_invocation: ID '(' argument ')';
 
 argument: (expression(',' expression)*)?;
 
-simpleType: 'int' | 'double' | 'char';
+simpleType returns[Type ast]:
+    'int' {$ast = new IntType($start.getLine(), $start.getCharPositionInLine() + 1);}
+    | 'double' {$ast = new DoubleType($start.getLine(), $start.getCharPositionInLine() + 1);}
+    | 'char' {$ast = new CharType($start.getLine(), $start.getCharPositionInLine() + 1);};
 
-returnType: 'void' | simpleType;
+returnType returns[Type ast]:
+    'void' {$ast = new VoidType($start.getLine(), $start.getCharPositionInLine() + 1);}
+    | simpleType {$ast = $simpleType.ast};
 
 statement:  function_invocation
             |'if' expression 'do' statement* ('else' statement*)? 'end'

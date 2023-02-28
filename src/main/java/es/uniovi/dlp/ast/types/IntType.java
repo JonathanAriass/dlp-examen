@@ -1,15 +1,11 @@
 package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.ast.Type;
+import es.uniovi.dlp.ast.AbstractType;
 
-public class IntType implements Type {
-  @Override
-  public int getLine() {
-    return 0;
+public class IntType extends AbstractType {
+
+  public IntType(int line, int column) {
+    super(line, column);
   }
 
-  @Override
-  public int getColumn() {
-    return 0;
-  }
 }
