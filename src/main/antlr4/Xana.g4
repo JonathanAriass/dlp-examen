@@ -51,17 +51,17 @@ structFields returns[List<StructFields> ast = new ArrayList<>()]:
     };
 
 def_functions returns[FunctionDefinition ast]:
-    'def' ident=ID '(' paramList ')' '::' returnType 'do' def_variables* statement* 'end'
+    'def' ident=ID '(' paramList ')' '::' returnType 'do' vars+=def_variables* statement* 'end'
     {
         FunType funType = new FunType($paramList.ast, $returnType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);
         List<Statement> statements = new ArrayList<>();
         // Los statements sera mejor crearlos como una lista por eso accedemos al statement.ast
-        for (var statement : $statements.ast) {
+        for (var statement : $statement.ast) {
             statements.addAll(statement.ast);
         }
 
         List<VarDefinition> varDefinitions = new ArrayList<>();
-        for (var varDefinition : $def_variables) {
+        for (var varDefinition : $vars) {
             varDefinitions.addAll(varDefinition.ast);
         }
 
@@ -78,9 +78,16 @@ paramList returns[List<VarDefinition> ast = new ArrayList<>();]:
 param returns[VarDefinition ast]:
     ident=ID '::' simpleType {$ast = new VarDefinition($ident.text, $simpleType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);};
 
-function_invocation: ID '(' argument ')';
+function_invocation returns[Expression ast]:
+    ID '(' argument ')' {$ast = new Invocation($argument.ast, $start.getLine(), $start.getCharPositionInLine() + 1);};
 
-argument: (expression(',' expression)*)?;
+argument returns[List<Expression> ast]:
+    (expr+=expression(',' expr+=expression)*)?
+    {
+        for (var expression : $expr) {
+           $ast.addAll(expression.ast);
+        }
+    };
 
 simpleType returns[Type ast]:
     'int' {$ast = new IntType($start.getLine(), $start.getCharPositionInLine() + 1);}
@@ -91,30 +98,65 @@ returnType returns[Type ast]:
     'void' {$ast = new VoidType($start.getLine(), $start.getCharPositionInLine() + 1);}
     | simpleType {$ast = $simpleType.ast};
 
-statement:  function_invocation
-            |'if' expression 'do' statement* ('else' statement*)? 'end'
-            | 'in' expression (',' expression)*
-            | 'puts' expression (',' expression)*
-            | expression '=' expression
-            | 'while' expression 'do' statement* 'end'
-            | ID '(' (statement(',' statement)*)? ')'
-            | 'return' expression;
+statement returns[List<Statement> ast = new ArrayList<>()]:
+    function_invocation {$ast.add($function_invocation.ast);}
+    |'if' expression 'do' if+=statement* ('else' else+=statement*)? 'end' {
+        List<Statement> ifconds = new ArrayList<>();
+        for (var cond : $if) {
+            ifconds.addAll(cond.ast);
+        }
 
-expression: function_invocation
-            | '(' expression ')'
-            | expression '[' expression ']'
-            | expression '.' ID
-            | expression 'as' simpleType
-            | '-' expression
-            | '!' expression
-            | expression ('*' | '/' | '%') expression
-            | expression ('+' | '-') expression
-            | expression ('>' | '>=' | '<' | '<=' | '!=' | '==') expression
-            | expression ('&&' | '||') expression
-            | ID
-            | INT_CONSTANT
-            | REAL_CONSTANT
-            | CHAR_CONSTANT;
+        List<Statement> elseconds = new ArrayList<>();
+        for (var cond : $else) {
+            elseconds.addAll(cond.ast);
+        }
+
+        $ast.add(new Conditional($expression.ast, ifconds, elseconds, $start.getLine(), $start.getCharPositionInLine() + 1));
+    }
+    | 'in' exp+=expression (',' exp+=expression)* {
+        for (var expression : $exp) {
+            $ast.add(new Read(expression, expression.getLine(), expression.getColumn()));
+        }
+    }
+    | 'puts' exp+=expression (',' exp+=expression)* {
+        for (var expression : $exp) {
+            $ast.add(new Write(expression, expression.getLine(), expression.getColumn()));
+        }
+    }
+    | leftExp=expression '=' rightExp=expression {$ast.add(new Assignment($leftExp.ast, $rightExp.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | 'while' expression 'do' stms+=statement* 'end' {
+        List<Statement> statements = new ArrayList<>();
+        for(var stm : $stms) {
+            statements.addAll(stm.ast);
+        }
+        $ast.add(new While($expression.ast, statements, $start.getLine(), $start.getCharPositionInLine() + 1));
+    }
+    | ID '(' (stms+=statement(',' stms+=statement)*)? ')' {
+        List<Statement> statements =  new ArrayList<>();
+        for (var statement : $stms) {
+            statements.add(statement);
+        }
+
+        $ast.add(new Invocation(statements, $start.getLine(), $start.getCharPositionInLine() + 1));
+    }
+    | 'return' expression {$ast.add(new Return($expression.ast, $start.getLine(), $start.getCharPositionInLine() + 1))};
+
+expression returns[Expression ast]:
+    function_invocation
+    | '(' expression ')'
+    | expression '[' expression ']'
+    | expression '.' ID
+    | expression 'as' simpleType
+    | '-' expression
+    | '!' expression
+    | expression ('*' | '/' | '%') expression
+    | expression ('+' | '-') expression
+    | expression ('>' | '>=' | '<' | '<=' | '!=' | '==') expression
+    | expression ('&&' | '||') expression
+    | ID
+    | INT_CONSTANT
+    | REAL_CONSTANT
+    | CHAR_CONSTANT;
 
 def_main returns[FunctionDefinition ast]:
     'def' 'main' '(' ')' 'do' (vars+=def_variables | stmnts+=statement)* 'end'
