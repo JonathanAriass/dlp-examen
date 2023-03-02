@@ -3,7 +3,7 @@ package es.uniovi.dlp.ast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Program extends AbstractASTNode{
+public class Program extends AbstractASTNode {
 
   private List<Definition> definitions;
 
@@ -15,5 +15,4 @@ public class Program extends AbstractASTNode{
   public List<Definition> getDefinitions() {
     return new ArrayList<>(definitions);
   }
-
 }

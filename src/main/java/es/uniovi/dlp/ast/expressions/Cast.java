@@ -20,6 +20,6 @@ public class Cast extends AbstractExpression {
   }
 
   public Expression getExp() {
-    return exp;
+    return this.exp;
   }
 }
