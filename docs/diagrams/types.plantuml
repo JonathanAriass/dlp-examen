@@ -48,7 +48,7 @@ class StructFields implements AbstractType {
 AbstractType <|.. Struct
 
 class FuncType {
-    params: VarDefinition
+    params: List<VarDefinition>
     returnType: Type
 }
 

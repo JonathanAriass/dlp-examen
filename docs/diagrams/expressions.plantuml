@@ -52,7 +52,7 @@ class ComparisonOperation extends AbstractExpression {
     rightExpression: Expression
 }
 
-class Invocation extends AbstractExpression {
+class Invocation extends AbstractExpression implements Statement {
     argumentos: List<Expression>
 }
 
@@ -60,11 +60,6 @@ class Cast {
     castType: Type
     exp: Expression
 }
-
-' I don't know if this is the same as LogicalOperation
-'class Logical extends AbstractExpression {
-'    operator: String
-'}
 
 class ArrayAccess extends AbstractExpression {
     array: Expression

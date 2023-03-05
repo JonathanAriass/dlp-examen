@@ -32,6 +32,11 @@ def_variables returns[List<VarDefinition> ast = new ArrayList<>()]:
         }
     };
 
+simpleType returns[Type ast]:
+    tp='int' {$ast = new IntType($tp.getLine(), $tp.getCharPositionInLine() + 1);}
+    | tp='double' {$ast = new DoubleType($tp.getLine(), $tp.getCharPositionInLine() + 1);}
+    | tp='char' {$ast = new CharType($tp.getLine(), $tp.getCharPositionInLine() + 1);};
+
 type returns[Type ast]:
         simpleType {$ast = $simpleType.ast;}
         | '[' size=INT_CONSTANT '::' type ']' {$ast = new Array(LexerHelper.lexemeToInt($size.text), $type.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
@@ -46,14 +51,14 @@ type returns[Type ast]:
 structFields returns[List<StructFields> ast = new ArrayList<>()]:
     ids+=ID (',' ids+=ID)* '::' type {
         for (var id : $ids) {
-           $ast.add(new StructFields(id.getText(), $type.ast, $start.getLine(), $start.getCharPositionInLine() + 1));
+           $ast.add(new StructFields(id.getText(), $type.ast, id.getLine(), id.getCharPositionInLine() + 1));
         }
     };
 
 def_functions returns[FunctionDefinition ast]:
-    'def' ident=ID '(' paramList ')' '::' returnType 'do' vars+=def_variables* stm+=statement* 'end'
+    'def' ident=ID para='(' paramList ')' '::' returnType 'do' vars+=def_variables* stm+=statement* 'end'
     {
-        FunType funType = new FunType($paramList.ast, $returnType.ast, $start.getLine(), $start.getCharPositionInLine() + 1);
+        FunType funType = new FunType($paramList.ast, $returnType.ast, $para.getLine(), $para.getCharPositionInLine() + 1);
         List<Statement> statements = new ArrayList<>();
 
         for (var statement : $stm) {
@@ -87,10 +92,6 @@ argument returns[List<Expression> ast = new ArrayList<>()]:
         }
     };
 
-simpleType returns[Type ast]:
-    'int' {$ast = new IntType($start.getLine(), $start.getCharPositionInLine() + 1);}
-    | 'double' {$ast = new DoubleType($start.getLine(), $start.getCharPositionInLine() + 1);}
-    | 'char' {$ast = new CharType($start.getLine(), $start.getCharPositionInLine() + 1);};
 
 returnType returns[Type ast]:
     'void' {$ast = new VoidType($start.getLine(), $start.getCharPositionInLine() + 1);}
@@ -150,9 +151,9 @@ expression returns[Expression ast]:
     | CHAR_CONSTANT {$ast = new CharLiteral(LexerHelper.lexemeToChar($CHAR_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);};
 
 def_main returns[FunctionDefinition ast]:
-    'def' 'main' '(' ')' 'do' (vars+=def_variables | stmnts+=statement)* 'end'
+    'def' 'main' para='(' ')' 'do' (vars+=def_variables | stmnts+=statement)* 'end'
     {
-        FunType funType = new FunType(new ArrayList<>(), new VoidType(0, 0), $start.getLine(), $start.getCharPositionInLine() + 1);
+        FunType funType = new FunType(new ArrayList<>(), new VoidType(0, 0), $para.getLine(), $para.getCharPositionInLine() + 1);
 
         List<VarDefinition> varDefinitions = new ArrayList<>();
         for (var varDefinition : $vars) {
