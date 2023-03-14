@@ -19,12 +19,6 @@ public class Compiler {
     this.filename = filename;
   }
 
-  public void run() throws IOException {
-    ErrorManager.getInstance().clearErrors();
-    program = parse(filename);
-    checkErrors();
-  }
-
   private void checkErrors() {
     if (!reportErrors) return;
 
@@ -54,19 +48,6 @@ public class Compiler {
 
     return parser.program().ast;
   }
-
-  public void setReportErrors(boolean reportErrors) {
-    this.reportErrors = reportErrors;
-  }
-    private Program parse(String file) throws IOException {
-        CharStream input = CharStreams.fromFileName(file);
-        XanaLexer lexer = new XanaLexer(input);
-
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        XanaParser parser = new XanaParser(tokens);
-
-        return parser.program().ast;
-    }
 
     private void assignType() {
         TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
