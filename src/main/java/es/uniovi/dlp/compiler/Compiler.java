@@ -5,6 +5,7 @@ import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.parser.XanaLexer;
 import es.uniovi.dlp.parser.XanaParser;
 import java.io.IOException;
+import es.uniovi.dlp.visitor.semantic.TypeCheckingVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,6 +38,12 @@ public class Compiler {
   public Program getProgram() {
     return program;
   }
+    public void run() throws IOException {
+        ErrorManager.getInstance().clearErrors();
+        program = parse(filename);
+        assignType();
+        checkErrors();
+    }
 
   private Program parse(String file) throws IOException {
     CharStream input = CharStreams.fromFileName(file);
@@ -51,4 +58,22 @@ public class Compiler {
   public void setReportErrors(boolean reportErrors) {
     this.reportErrors = reportErrors;
   }
+    private Program parse(String file) throws IOException {
+        CharStream input = CharStreams.fromFileName(file);
+        XanaLexer lexer = new XanaLexer(input);
+
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        XanaParser parser = new XanaParser(tokens);
+
+        return parser.program().ast;
+    }
+
+    private void assignType() {
+        TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
+        typeCheckingVisitor.visit(program, null);
+    }
+
+    public void setReportErrors(boolean reportErrors) {
+        this.reportErrors = reportErrors;
+    }
 }

@@ -5,6 +5,10 @@ import es.uniovi.dlp.parser.XanaParser;
 import java.io.IOException;
 import org.antlr.v4.runtime.*;
 
+import es.uniovi.dlp.compiler.Compiler;
+
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class TestHelpers {
   public static XanaParser silentParserForProgram(String programName) {
     var lexer = lexerForProgram(programName);
@@ -79,5 +83,15 @@ public class TestHelpers {
             throw new RuntimeException(e);
           }
         });
+  }
+
+  public static void runCompiler(String file) {
+    try {
+      var compiler = new Compiler(file);
+      compiler.setReportErrors(false);
+      compiler.run();
+    } catch (IOException e) {
+      fail(e);
+    }
   }
 }
