@@ -2,6 +2,7 @@ package es.uniovi.dlp.ast.statements;
 
 import es.uniovi.dlp.ast.AbstractStatement;
 import es.uniovi.dlp.ast.Expression;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class Assignment extends AbstractStatement {
 
@@ -20,5 +21,11 @@ public class Assignment extends AbstractStatement {
 
   public Expression getRightExpression() {
     return this.rightExpression;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

@@ -2,6 +2,7 @@ package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractExpression;
 import es.uniovi.dlp.ast.Definition;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class Variable extends AbstractExpression {
 
@@ -23,5 +24,16 @@ public class Variable extends AbstractExpression {
 
   public Definition getDefinition() {
     return this.definition;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
+  }
+
+  @Override
+  public boolean isLValue() {
+    return true;
   }
 }

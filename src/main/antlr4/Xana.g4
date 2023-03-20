@@ -145,7 +145,7 @@ expression returns[Expression ast]:
     | left=expression oper=('+' | '-') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | left=expression oper=('>' | '>=' | '<' | '<=' | '!=' | '==') right=expression {$ast = new ComparisonOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | left=expression oper=('&&' | '||') right=expression {$ast = new LogicalOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
-    | ID {$ast = new Variable($ID.text, $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | ident=ID {$ast = new Variable($ident.text, $ident.getLine(), $ident.getCharPositionInLine() + 1);}
     | INT_CONSTANT {$ast = new IntLiteral(LexerHelper.lexemeToInt($INT_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
     | REAL_CONSTANT {$ast = new DoubleLiteral(LexerHelper.lexemeToReal($REAL_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
     | CHAR_CONSTANT {$ast = new CharLiteral(LexerHelper.lexemeToChar($CHAR_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);};

@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractExpression;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class CharLiteral extends AbstractExpression {
 
@@ -13,5 +14,11 @@ public class CharLiteral extends AbstractExpression {
 
   public char getCharacter() {
     return this.character;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

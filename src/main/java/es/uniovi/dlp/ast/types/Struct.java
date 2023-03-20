@@ -4,6 +4,7 @@ import es.uniovi.dlp.ast.AbstractType;
 import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.error.ErrorReason;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.*;
 
 public class Struct extends AbstractType {
@@ -26,5 +27,11 @@ public class Struct extends AbstractType {
 
   public List<StructFields> getFields() {
     return new ArrayList<StructFields>(fields);
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

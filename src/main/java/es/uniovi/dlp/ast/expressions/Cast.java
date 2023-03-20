@@ -3,6 +3,7 @@ package es.uniovi.dlp.ast.expressions;
 import es.uniovi.dlp.ast.AbstractExpression;
 import es.uniovi.dlp.ast.Expression;
 import es.uniovi.dlp.ast.Type;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class Cast extends AbstractExpression {
 
@@ -21,5 +22,11 @@ public class Cast extends AbstractExpression {
 
   public Expression getExp() {
     return this.exp;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

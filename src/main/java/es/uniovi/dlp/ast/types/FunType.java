@@ -3,6 +3,7 @@ package es.uniovi.dlp.ast.types;
 import es.uniovi.dlp.ast.AbstractType;
 import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.ast.definitions.VarDefinition;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,17 @@ public class FunType extends AbstractType {
     this.returnType = returnType;
   }
 
-  private List<VarDefinition> getParams() {
+  public List<VarDefinition> getParams() {
     return new ArrayList<>(this.params);
   }
 
-  private Type getReturnType() {
+  public Type getReturnType() {
     return this.returnType;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

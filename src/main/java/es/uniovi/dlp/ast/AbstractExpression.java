@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast;
 
-public class AbstractExpression extends AbstractASTNode implements Expression {
+public abstract class AbstractExpression extends AbstractASTNode implements Expression {
 
   private Type type;
 
@@ -16,5 +16,10 @@ public class AbstractExpression extends AbstractASTNode implements Expression {
   @Override
   public void setType() {
     this.type = type;
+  }
+
+  @Override
+  public boolean isLValue() {
+    return false;
   }
 }

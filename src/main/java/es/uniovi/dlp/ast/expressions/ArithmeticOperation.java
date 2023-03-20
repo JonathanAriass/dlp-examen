@@ -2,6 +2,7 @@ package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractExpression;
 import es.uniovi.dlp.ast.Expression;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class ArithmeticOperation extends AbstractExpression {
   private final String operation;
@@ -30,5 +31,11 @@ public class ArithmeticOperation extends AbstractExpression {
 
   public Expression getRightExpression() {
     return rightExpression;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

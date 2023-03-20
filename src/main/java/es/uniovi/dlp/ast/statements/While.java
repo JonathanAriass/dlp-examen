@@ -3,6 +3,7 @@ package es.uniovi.dlp.ast.statements;
 import es.uniovi.dlp.ast.AbstractStatement;
 import es.uniovi.dlp.ast.Expression;
 import es.uniovi.dlp.ast.Statement;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,5 +24,11 @@ public class While extends AbstractStatement {
 
   public List<Statement> getBody() {
     return new ArrayList<>(body);
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

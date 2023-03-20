@@ -1,5 +1,6 @@
 package es.uniovi.dlp.ast;
 
+import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,5 +15,11 @@ public class Program extends AbstractASTNode {
 
   public List<Definition> getDefinitions() {
     return new ArrayList<>(definitions);
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }
