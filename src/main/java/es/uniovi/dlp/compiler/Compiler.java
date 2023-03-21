@@ -19,6 +19,14 @@ public class Compiler {
     this.filename = filename;
   }
 
+  public void run() throws IOException {
+    ErrorManager.getInstance().clearErrors();
+    program = parse(filename);
+    assignScope();
+    assignType();
+    checkErrors();
+  }
+
   private void checkErrors() {
     if (!reportErrors) return;
 
@@ -33,13 +41,6 @@ public class Compiler {
     return program;
   }
 
-  public void run() throws IOException {
-    ErrorManager.getInstance().clearErrors();
-    program = parse(filename);
-    assignType();
-    checkErrors();
-  }
-
   private Program parse(String file) throws IOException {
     CharStream input = CharStreams.fromFileName(file);
     XanaLexer lexer = new XanaLexer(input);
@@ -48,6 +49,10 @@ public class Compiler {
     XanaParser parser = new XanaParser(tokens);
 
     return parser.program().ast;
+  }
+
+  private void assignScope() {
+    // Run here your IdentificationVisitor
   }
 
   private void assignType() {

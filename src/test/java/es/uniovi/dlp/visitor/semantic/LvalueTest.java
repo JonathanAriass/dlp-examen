@@ -2,6 +2,7 @@ package es.uniovi.dlp.visitor.semantic;
 
 import static es.uniovi.dlp.TestHelpers.runCompiler;
 import static org.junit.jupiter.api.Assertions.*;
+import static es.uniovi.dlp.TestHelpers.assertFoundErrors;
 
 import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
