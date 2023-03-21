@@ -14,14 +14,7 @@ public class Struct extends AbstractType {
   public Struct(List<StructFields> fields, int line, int column) {
     super(line, column);
     // check if there is duplicated values
-    Set<String> aux = new HashSet<>();
-    for (StructFields field : fields) {
-      if (!aux.add(field.getName())) {
-        ErrorManager errorManager = ErrorManager.getInstance();
-        errorManager.addError(
-            new Error(field.getLine(), field.getColumn(), ErrorReason.FIELD_ALREADY_DECLARED));
-      }
-    }
+
     this.fields = fields;
   }
 
