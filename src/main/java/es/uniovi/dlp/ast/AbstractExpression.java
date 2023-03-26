@@ -14,7 +14,7 @@ public abstract class AbstractExpression extends AbstractASTNode implements Expr
   }
 
   @Override
-  public void setType() {
+  public void setType(Type type) {
     this.type = type;
   }
 

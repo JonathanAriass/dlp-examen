@@ -1,9 +1,6 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.AbstractType;
-import es.uniovi.dlp.error.Error;
-import es.uniovi.dlp.error.ErrorManager;
-import es.uniovi.dlp.error.ErrorReason;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.*;
 

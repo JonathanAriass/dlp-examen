@@ -1,7 +1,6 @@
 package es.uniovi.dlp.visitor.semantic;
 
 import es.uniovi.dlp.ast.Definition;
-
 import java.util.*;
 
 public class SymbolTable {
@@ -37,10 +36,9 @@ public class SymbolTable {
   }
 
   public Definition find(String id) {
-    for (int i = table.size()-1; i >= 0; i--){
+    for (int i = table.size() - 1; i >= 0; i--) {
       Definition def = table.get(i).get(id);
-      if (def != null)
-        return def;
+      if (def != null) return def;
     }
     return null;
   }

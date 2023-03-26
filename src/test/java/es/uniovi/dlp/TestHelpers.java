@@ -1,7 +1,5 @@
 package es.uniovi.dlp;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 

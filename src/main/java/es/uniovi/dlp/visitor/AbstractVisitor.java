@@ -24,8 +24,8 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
 
   @Override
   public ReturnType visit(Assignment assign, ParamType param) {
-    assign.getLeftExpression().accept(this, param);
-    assign.getRightExpression().accept(this, param);
+    ReturnType leftType = assign.getLeftExpression().accept(this, param);
+    ReturnType rightType = assign.getRightExpression().accept(this, param);
     return null;
   }
 
@@ -184,10 +184,10 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   @Override
   public ReturnType visit(FunctionDefinition functionDefinition, ParamType param) {
     functionDefinition.getType().accept(this, param);
-    functionDefinition.getStatementsList().forEach(func -> func.accept(this, param));
     functionDefinition
         .getVarDefinitionList()
         .forEach(varDefinition -> varDefinition.accept(this, param));
+    functionDefinition.getStatementsList().forEach(func -> func.accept(this, param));
     return null;
   }
 

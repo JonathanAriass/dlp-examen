@@ -10,6 +10,10 @@ public record Error(Location location, ErrorReason reason, String extraMessage)
     this(new Location(line, column), reason, "");
   }
 
+  public Error(int line, int column, ErrorReason reason, String extraMessage) {
+    this(new Location(line, column), reason, extraMessage);
+  }
+
   @Override
   public int compareTo(Error error) {
     return location.compareTo(error.location);

@@ -1,8 +1,8 @@
 package es.uniovi.dlp.visitor.semantic;
 
+import static es.uniovi.dlp.TestHelpers.assertFoundErrors;
 import static es.uniovi.dlp.TestHelpers.runCompiler;
 import static org.junit.jupiter.api.Assertions.*;
-import static es.uniovi.dlp.TestHelpers.assertFoundErrors;
 
 import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
@@ -34,6 +34,7 @@ public class LvalueTest {
 
   private static void assertFoundErrors(List<Error> errors) {
     var foundErrors = ErrorManager.getInstance().getErrors();
+    foundErrors.forEach(error -> System.out.println(error));
     assertIterableEquals(foundErrors, errors);
   }
 }
