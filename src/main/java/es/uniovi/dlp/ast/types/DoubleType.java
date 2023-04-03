@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.AbstractType;
+import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class DoubleType extends AbstractType {
@@ -13,4 +14,47 @@ public class DoubleType extends AbstractType {
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
+
+  @Override
+  public Type cast(Type type) {
+    if (type instanceof IntType || type instanceof DoubleType) {
+      return type;
+    }
+    return super.cast(type);
+  }
+
+  @Override
+  public Type arithmetic(Type type) {
+    if (type instanceof DoubleType || type instanceof IntType) {
+      return this;
+    }
+    return super.arithmetic(type);
+  }
+
+  @Override
+  public Type comparison(Type type) {
+    if (type instanceof IntType || type instanceof DoubleType || type instanceof CharType) {
+      return new IntType(type.getLine(), type.getColumn()); // 0: false, 1..*: true
+    }
+    return super.comparison(type);
+  }
+
+  @Override
+  public Type assignment(Type type) {
+    if (type instanceof DoubleType || type instanceof IntType || type instanceof CharType) {
+      return type; // FAQ: Should be char assignable to double?
+    }
+    return super.assignment(type);
+  }
+
+  @Override
+  public boolean promotableTo(Type to) {
+    return (to instanceof FunType && ((FunType) to).getReturnType() instanceof DoubleType) || to instanceof DoubleType;
+  }
+
+  @Override
+  public boolean isArithmetic() {
+    return true;
+  }
+
 }

@@ -87,7 +87,7 @@ public class TypeCheckingTest {
   }
 
   @Test
-  void invalidInvocation() {
+  void invalidIwnvocation() {
     runCompiler("examples/errors/types/invalid_invocation.xana");
     assertFoundErrors(
         Arrays.asList(

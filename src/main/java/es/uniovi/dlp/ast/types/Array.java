@@ -28,4 +28,17 @@ public class Array extends AbstractType {
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
+
+  @Override
+  public Type indexing(Type type) {
+    if (type instanceof IntType) {
+      return this.type;
+    }
+    return super.indexing(type);
+  }
+
+  @Override
+  public boolean isIndexable() {
+    return true;
+  }
 }

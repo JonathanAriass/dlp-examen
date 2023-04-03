@@ -90,6 +90,19 @@ public class TestHelpers {
 
   public static void assertFoundErrors(List<Error> errors) {
     var foundErrors = ErrorManager.getInstance().getErrors();
+    System.out.println("--------------------");
+    System.out.println("-   FOUND ERRORS   -");
+    System.out.println("--------------------");
+    foundErrors.forEach(error -> {
+      System.out.println(error);
+    });
+
+    System.out.println("--------------------");
+    System.out.println("-  EXPECTED ERRORS -");
+    System.out.println("--------------------");
+    errors.forEach(error -> {
+      System.out.println(error);
+    });
     assertIterableEquals(errors, foundErrors);
   }
 

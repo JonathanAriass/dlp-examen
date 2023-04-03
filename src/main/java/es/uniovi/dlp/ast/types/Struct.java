@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.AbstractType;
+import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.*;
 
@@ -23,5 +24,21 @@ public class Struct extends AbstractType {
   public <ReturnType, ParamType> ReturnType accept(
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
+  }
+
+  @Override
+  public Type dot(String fieldName) {
+    for (StructFields field : fields)
+      if (field.getName().equals(fieldName))
+        return field.getType();
+    return super.dot(fieldName);
+  }
+
+  @Override
+  public boolean allowDot(String fieldName) {
+    for (StructFields field : fields)
+      if (field.getName().equals(fieldName))
+        return true;
+    return false;
   }
 }

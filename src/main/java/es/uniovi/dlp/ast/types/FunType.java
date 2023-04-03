@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.AbstractType;
+import es.uniovi.dlp.ast.Expression;
 import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.ast.definitions.VarDefinition;
 import es.uniovi.dlp.visitor.AbstractVisitor;
@@ -31,4 +32,40 @@ public class FunType extends AbstractType {
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
+
+  @Override
+  public boolean isLogical() {
+    System.out.println("Entra aqui");
+    if (returnType instanceof IntType) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public boolean promotableTo(Type to) {
+    return returnType.promotableTo(to);
+  }
+
+  @Override
+  public Type call(List<Expression> args) {
+    if (hasOtherArgs(args)) {
+      return super.call(args);
+    }
+    for (int i = 0; i < args.size(); i++) {
+      if (!args.get(i).getType().promotableTo(params.get(i).getType())) {
+        return super.call(args);
+      }
+    }
+    return this;
+  }
+
+  @Override
+  public boolean hasOtherArgs(List<Expression> args) {
+    if (args.size() != params.size()) {
+      return true;
+    }
+    return false;
+  }
+
 }

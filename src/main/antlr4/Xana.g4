@@ -113,9 +113,9 @@ statement returns[List<Statement> ast = new ArrayList<>()]:
 
         $ast.add(new Conditional($expression.ast, ifconds, elseconds, $start.getLine(), $start.getCharPositionInLine() + 1));
     }
-    | 'in' exp+=expression (',' exp+=expression)* {
+    | in='in' exp+=expression (',' exp+=expression)* {
         for (var expression : $exp) {
-            $ast.add(new Read(expression.ast, expression.ast.getLine(), expression.ast.getColumn()));
+            $ast.add(new Read(expression.ast, $in.getLine(), $in.getCharPositionInLine() + 4));
         }
     }
     | 'puts' exp+=expression (',' exp+=expression)* {
@@ -131,7 +131,7 @@ statement returns[List<Statement> ast = new ArrayList<>()]:
         }
         $ast.add(new While($expression.ast, statements, $start.getLine(), $start.getCharPositionInLine() + 1));
     }
-    | 'return' expression {$ast.add(new Return($expression.ast, $start.getLine(), $start.getCharPositionInLine() + 1));};
+    | 'return' expression {$ast.add(new Return($expression.ast, $expression.ast.getLine(), $expression.ast.getColumn()));};
 
 expression returns[Expression ast]:
     ident=ID '(' argument ')' {$ast = new Invocation(new Variable($ident.text, $ident.getLine(), $ident.getCharPositionInLine()+1), $argument.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
@@ -142,9 +142,9 @@ expression returns[Expression ast]:
     | '-' e=expression {$ast = new UnaryMinus($e.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | '!' e=expression {$ast = new Negation($e.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | left=expression oper=('*' | '/' | '%') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
-    | left=expression oper=('+' | '-') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
-    | left=expression oper=('>' | '>=' | '<' | '<=' | '!=' | '==') right=expression {$ast = new ComparisonOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
-    | left=expression oper=('&&' | '||') right=expression {$ast = new LogicalOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | left=expression oper=('+' | '-') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
+    | left=expression oper=('>' | '>=' | '<' | '<=' | '!=' | '==') right=expression {$ast = new ComparisonOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
+    | left=expression oper=('&&' | '||') right=expression {$ast = new LogicalOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
     | ident=ID {$ast = new Variable($ident.text, $ident.getLine(), $ident.getCharPositionInLine() + 1);}
     | INT_CONSTANT {$ast = new IntLiteral(LexerHelper.lexemeToInt($INT_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
     | REAL_CONSTANT {$ast = new DoubleLiteral(LexerHelper.lexemeToReal($REAL_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}

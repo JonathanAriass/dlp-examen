@@ -1,10 +1,11 @@
 package es.uniovi.dlp.ast.types;
 
+import es.uniovi.dlp.ast.AbstractASTNode;
 import es.uniovi.dlp.ast.AbstractType;
 import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
-public class StructFields extends AbstractType {
+public class StructFields extends AbstractASTNode {
 
   private String name;
   private Type type;
