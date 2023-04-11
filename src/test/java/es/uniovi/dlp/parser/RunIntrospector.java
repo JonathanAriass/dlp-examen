@@ -24,7 +24,7 @@ public class RunIntrospector {
 
     Program ast = parser.program().ast;
 
-    IntrospectorModel model = new IntrospectorModel("Program", ast);
-    new IntrospectorTree("Introspector", model);
+    // IntrospectorModel model = new IntrospectorModel("Program", ast);
+    // new IntrospectorView("Introspector", model);
   }
 }

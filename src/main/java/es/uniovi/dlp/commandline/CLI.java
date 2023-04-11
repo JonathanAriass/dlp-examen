@@ -2,7 +2,7 @@ package es.uniovi.dlp.commandline;
 
 import es.uniovi.dlp.compiler.Compiler;
 import introspector.model.IntrospectorModel;
-import introspector.view.IntrospectorTree;
+import introspector.view.IntrospectorView;
 
 public class CLI {
 
@@ -39,7 +39,7 @@ public class CLI {
       Compiler compiler = new Compiler(file);
       compiler.run();
       IntrospectorModel model = new IntrospectorModel("Program", compiler.getProgram());
-      new IntrospectorTree("Introspector", model);
+      new IntrospectorView("Introspector", model);
     } catch (Exception e) {
       System.err.println("Failed to run the program:");
       System.err.println(e.getMessage());
