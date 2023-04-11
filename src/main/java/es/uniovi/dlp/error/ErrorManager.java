@@ -1,6 +1,7 @@
 package es.uniovi.dlp.error;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ErrorManager {
@@ -23,7 +24,9 @@ public class ErrorManager {
   }
 
   public List<Error> getErrors() {
-    return new ArrayList<>(errors);
+    var errors = new ArrayList<>(this.errors);
+    Collections.sort(errors);
+    return errors;
   }
 
   public boolean hasErrors() {

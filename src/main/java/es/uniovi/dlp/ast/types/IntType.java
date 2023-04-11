@@ -57,6 +57,14 @@ public class IntType extends AbstractType {
   }
 
   @Override
+  public Type logical(Type type) {
+    if (type instanceof IntType) {
+      return type;
+    }
+    return super.logical(type);
+  }
+
+  @Override
   public boolean isArithmetic() {
     return true;
   }

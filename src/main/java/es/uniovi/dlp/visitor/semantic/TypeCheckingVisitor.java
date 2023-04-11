@@ -129,7 +129,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Type> {
     super.visit(logOp, param);
     logOp.setType(logOp.getLeftExpression().getType().logical(logOp.getRightExpression().getType()));
     if (logOp.getType() == null) {
-      ErrorManager.getInstance().addError(new Error(new Location(logOp.getLine(), logOp.getColumn()), ErrorReason.INVALID_LOGICAL));
+      ErrorManager.getInstance().addError(new Error(new Location(logOp.getLine(), logOp.getColumn()), ErrorReason.INVALID_LOGICAL, logOp.getRightExpression().getType().toString()));
       logOp.setType(new ErrorType(logOp.getLine(), logOp.getColumn()));
     }
     return null;

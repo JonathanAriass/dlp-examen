@@ -6,6 +6,16 @@ public record Error(Location location, ErrorReason reason, String extraMessage)
     this(location, reason, "");
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    Error incoming = (Error)obj;
+    if (incoming.location.equals(this.location) && incoming.reason.equals(this.reason)) {
+      return true;
+    }
+
+    return false;
+  }
+
   public Error(int line, int column, ErrorReason reason) {
     this(new Location(line, column), reason, "");
   }
