@@ -8,7 +8,7 @@ public record Error(Location location, ErrorReason reason, String extraMessage)
 
   @Override
   public boolean equals(Object obj) {
-    Error incoming = (Error)obj;
+    Error incoming = (Error) obj;
     if (incoming.location.equals(this.location) && incoming.reason.equals(this.reason)) {
       return true;
     }

@@ -49,7 +49,8 @@ public class DoubleType extends AbstractType {
 
   @Override
   public boolean promotableTo(Type to) {
-    return (to instanceof FunType && ((FunType) to).getReturnType() instanceof DoubleType) || to instanceof DoubleType;
+    return (to instanceof FunType && ((FunType) to).getReturnType() instanceof DoubleType)
+        || to instanceof DoubleType;
   }
 
   @Override
@@ -57,4 +58,8 @@ public class DoubleType extends AbstractType {
     return true;
   }
 
+  @Override
+  public int getNumberOfBytes() {
+    return 4;
+  }
 }

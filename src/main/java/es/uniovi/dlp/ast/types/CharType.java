@@ -2,7 +2,6 @@ package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.AbstractType;
 import es.uniovi.dlp.ast.Type;
-import es.uniovi.dlp.ast.statements.Read;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class CharType extends AbstractType {
@@ -59,5 +58,10 @@ public class CharType extends AbstractType {
   @Override
   public boolean promotableTo(Type to) {
     return to instanceof IntType || to instanceof DoubleType || super.promotableTo(to);
+  }
+
+  @Override
+  public int getNumberOfBytes() {
+    return 1;
   }
 }

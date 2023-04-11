@@ -28,17 +28,20 @@ public class Struct extends AbstractType {
 
   @Override
   public Type dot(String fieldName) {
-    for (StructFields field : fields)
-      if (field.getName().equals(fieldName))
-        return field.getType();
+    for (StructFields field : fields) if (field.getName().equals(fieldName)) return field.getType();
     return super.dot(fieldName);
   }
 
   @Override
   public boolean allowDot(String fieldName) {
-    for (StructFields field : fields)
-      if (field.getName().equals(fieldName))
-        return true;
+    for (StructFields field : fields) if (field.getName().equals(fieldName)) return true;
     return false;
+  }
+
+  @Override
+  public int getNumberOfBytes() {
+    int bytes = 0;
+    for (StructFields field : fields) bytes += field.getType().getNumberOfBytes();
+    return bytes;
   }
 }

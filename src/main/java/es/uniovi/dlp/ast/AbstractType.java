@@ -1,8 +1,6 @@
 package es.uniovi.dlp.ast;
 
-
 import es.uniovi.dlp.ast.types.ErrorType;
-
 import java.util.List;
 
 public abstract class AbstractType extends AbstractASTNode implements Type {
@@ -84,15 +82,27 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
   }
 
   @Override
-  public boolean isArithmetic() { return false; }
+  public boolean isArithmetic() {
+    return false;
+  }
 
   @Override
-  public boolean isLogical() { return false; }
+  public boolean isLogical() {
+    return false;
+  }
 
   @Override
-  public boolean hasOtherArgs(List<Expression> args) { return false; }
+  public boolean hasOtherArgs(List<Expression> args) {
+    return false;
+  }
 
   @Override
-  public boolean promotableTo(Type to) { return false; }
+  public boolean promotableTo(Type to) {
+    return false;
+  }
 
+  @Override
+  public int getNumberOfBytes() {
+    return 0;
+  }
 }

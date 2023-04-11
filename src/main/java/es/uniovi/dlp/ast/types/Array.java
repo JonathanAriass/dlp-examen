@@ -41,4 +41,9 @@ public class Array extends AbstractType {
   public boolean isIndexable() {
     return true;
   }
+
+  @Override
+  public int getNumberOfBytes() {
+    return type.getNumberOfBytes() * size;
+  }
 }

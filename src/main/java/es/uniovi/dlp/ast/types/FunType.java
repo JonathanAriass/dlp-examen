@@ -67,5 +67,4 @@ public class FunType extends AbstractType {
     }
     return false;
   }
-
 }

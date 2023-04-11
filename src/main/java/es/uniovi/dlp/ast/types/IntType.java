@@ -26,7 +26,7 @@ public class IntType extends AbstractType {
 
   @Override
   public Type arithmetic(Type type) {
-    if (type instanceof IntType ||  type instanceof CharType) {
+    if (type instanceof IntType || type instanceof CharType) {
       return this;
     }
     if (type instanceof DoubleType) {
@@ -53,7 +53,8 @@ public class IntType extends AbstractType {
 
   @Override
   public boolean promotableTo(Type to) {
-    return (to instanceof FunType && ((FunType) to).getReturnType() instanceof IntType) || to instanceof IntType;
+    return (to instanceof FunType && ((FunType) to).getReturnType() instanceof IntType)
+        || to instanceof IntType;
   }
 
   @Override
@@ -72,5 +73,10 @@ public class IntType extends AbstractType {
   @Override
   public boolean isLogical() {
     return true;
+  }
+
+  @Override
+  public int getNumberOfBytes() {
+    return 2;
   }
 }
