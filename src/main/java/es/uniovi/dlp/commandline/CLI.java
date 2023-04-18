@@ -4,6 +4,8 @@ import es.uniovi.dlp.compiler.Compiler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
 
+import java.io.OutputStreamWriter;
+
 public class CLI {
 
   public static void main(String[] args) {
@@ -15,6 +17,12 @@ public class CLI {
         switch (args[1]) {
           case "--introspector":
             introspectProgram(args[0]);
+            break;
+          case "-a":
+            printAssembler(args[0]);
+            break;
+          case "-A":
+            printAssemblerWithoutComments(args[0]);
             break;
           default:
             help();
@@ -51,5 +59,25 @@ public class CLI {
     System.out.println("usage: xana file.xana [options]");
     System.out.println("Options");
     System.out.println(" --introspector\tLaunch the introspector");
+  }
+
+  private static void printAssembler(String file) {
+    try {
+      new Compiler(file, new OutputStreamWriter(System.out)).run();
+    } catch (Exception e) {
+      System.err.println("Failed to run the program:");
+      System.err.println(e.getMessage());
+    }
+  }
+
+  private static void printAssemblerWithoutComments(String file) {
+    try {
+      Compiler compiler = new Compiler(file, new OutputStreamWriter(System.out));
+      compiler.setShowDebug(false);
+      compiler.run();
+    } catch (Exception e) {
+      System.err.println("Failed to run the program:");
+      System.err.println(e.getMessage());
+    }
   }
 }
