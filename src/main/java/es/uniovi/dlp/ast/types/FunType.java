@@ -67,4 +67,9 @@ public class FunType extends AbstractType {
     }
     return false;
   }
+
+  @Override
+  public String toString() {
+    return "function";
+  }
 }

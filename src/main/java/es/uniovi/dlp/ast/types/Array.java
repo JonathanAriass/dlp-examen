@@ -46,4 +46,9 @@ public class Array extends AbstractType {
   public int getNumberOfBytes() {
     return type.getNumberOfBytes() * size;
   }
+
+  @Override
+  public String toString() {
+    return "array";
+  }
 }

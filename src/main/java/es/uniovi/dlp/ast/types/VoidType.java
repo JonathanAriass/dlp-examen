@@ -14,4 +14,9 @@ public class VoidType extends AbstractType {
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
+
+  @Override
+  public String toString() {
+    return "void";
+  }
 }

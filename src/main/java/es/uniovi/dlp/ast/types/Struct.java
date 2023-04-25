@@ -44,4 +44,9 @@ public class Struct extends AbstractType {
     for (StructFields field : fields) bytes += field.getType().getNumberOfBytes();
     return bytes;
   }
+
+  @Override
+  public String toString() {
+    return "struct";
+  }
 }

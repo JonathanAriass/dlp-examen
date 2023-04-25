@@ -3,7 +3,6 @@ package es.uniovi.dlp.commandline;
 import es.uniovi.dlp.compiler.Compiler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
-
 import java.io.OutputStreamWriter;
 
 public class CLI {

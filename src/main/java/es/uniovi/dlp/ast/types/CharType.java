@@ -25,8 +25,11 @@ public class CharType extends AbstractType {
 
   @Override
   public Type arithmetic(Type type) {
-    if (type instanceof CharType || type instanceof IntType) {
-      return this;
+    if (type instanceof CharType) {
+      return new IntType(type.getLine(), type.getColumn());
+    }
+    if (type instanceof IntType) {
+      return type;
     }
     if (type instanceof DoubleType) {
       return type;
@@ -63,5 +66,10 @@ public class CharType extends AbstractType {
   @Override
   public int getNumberOfBytes() {
     return 1;
+  }
+
+  @Override
+  public String toString() {
+    return "char";
   }
 }
