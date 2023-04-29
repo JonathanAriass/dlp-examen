@@ -49,4 +49,11 @@ public class Struct extends AbstractType {
   public String toString() {
     return "struct";
   }
+
+  @Override
+  public int getFieldOffset(String field) {
+    for (StructFields structField : fields)
+      if (structField.getName().equals(field)) return structField.getOffset();
+    return super.getFieldOffset(field);
+  }
 }

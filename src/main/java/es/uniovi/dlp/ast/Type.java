@@ -33,4 +33,6 @@ public interface Type extends ASTNode {
   boolean promotableTo(Type to);
 
   int getNumberOfBytes();
+
+  int getFieldOffset(String field);
 }

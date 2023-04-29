@@ -11,6 +11,7 @@ public class CodeGenerator {
 
   private String fileName;
   private OutputStreamWriter out;
+  private int labelCounter;
 
   public CodeGenerator(String fileName, OutputStreamWriter writer) {
     this.fileName = fileName;
@@ -54,6 +55,10 @@ public class CodeGenerator {
   public void label(String label) {
     newLine();
     write(label + ":", false);
+  }
+
+  public int getLabel() {
+    return labelCounter++;
   }
 
   private String getTypeSuffix(Type type) {
@@ -211,6 +216,7 @@ public class CodeGenerator {
   //    }
 
   public void promoteTo(Type from, Type to) {
+    //    System.out.println("FROM:" + from + " | TO:" + to);
     if (from instanceof IntType) {
       if (to instanceof DoubleType) i2f();
       if (to instanceof CharType) i2b();
@@ -253,6 +259,18 @@ public class CodeGenerator {
 
   public void mul() {
     write("muli");
+  }
+
+  public void jmp(int label) {
+    write("jmp\tlabel" + label);
+  }
+
+  public void jz(int label) {
+    write("jz\tlabel" + label);
+  }
+
+  public void jnz(int label) {
+    write("jnz\tlabel" + label);
   }
 
   public void instructionDispatcher(String op, Type type) {

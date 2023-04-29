@@ -109,9 +109,15 @@ public class ExecuteCGVisitor extends AbstractVisitor<Type, Definition> {
     generator.line(assignment.getLine());
     assignment.getLeftExpression().accept(addressVisitor, null);
     assignment.getRightExpression().accept(valueVisitor, null);
+    //    generator.promoteTo(
+    //        assignment.getLeftExpression().getType(), assignment.getRightExpression().getType());
+
     generator.promoteTo(
-        assignment.getLeftExpression().getType(), assignment.getRightExpression().getType());
+        assignment.getRightExpression().getType(), assignment.getLeftExpression().getType());
+
     generator.store(assignment.getLeftExpression().getType());
+    //    System.out.println("PRUEBA: " + assignment.getLeftExpression().getType());
+    //    System.out.println("PRUEBA2: " + assignment.getRightExpression().getType());
     return null;
   }
 
@@ -131,6 +137,40 @@ public class ExecuteCGVisitor extends AbstractVisitor<Type, Definition> {
     generator.comments("Write");
     puts.getExpression().accept(valueVisitor, null);
     generator.out(puts.getExpression().getType());
+    return null;
+  }
+
+  @Override
+  public Type visit(While aWhile, Definition param) {
+    generator.line(aWhile.getLine());
+    generator.comments("While statement");
+    int whileLabel = generator.getLabel();
+    int whileEndLabel = generator.getLabel();
+    generator.label(whileLabel);
+    aWhile.getCondition().accept(valueVisitor, null);
+    generator.jz(whileEndLabel);
+    generator.comments("Body of the while statement");
+    aWhile.getBody().forEach(statement -> statement.accept(this, param));
+    generator.jmp(whileLabel);
+    generator.label(whileEndLabel);
+    return null;
+  }
+
+  @Override
+  public Type visit(Conditional conditional, Definition param) {
+    generator.line(conditional.getLine());
+    generator.comments("If statement");
+    conditional.getCondition().accept(valueVisitor, null);
+    int elseLabel = generator.getLabel();
+    int ifEndLabel = generator.getLabel();
+    generator.jz(elseLabel);
+    generator.comments("Body of the if branch");
+    conditional.getIfBody().forEach(statement -> statement.accept(this, param));
+    generator.jmp(ifEndLabel);
+    generator.label(elseLabel);
+    generator.comments("Body of the else branch");
+    conditional.getElseBody().forEach(statement -> statement.accept(this, param));
+    generator.label(ifEndLabel);
     return null;
   }
 }
