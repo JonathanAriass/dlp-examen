@@ -3,6 +3,7 @@ package es.uniovi.dlp.commandline;
 import es.uniovi.dlp.compiler.Compiler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
 public class CLI {
@@ -27,14 +28,33 @@ public class CLI {
             help();
         }
         break;
+      case 3:
+        switch (args[1]) {
+          case "-d":
+            runProgram(args[0], args[0], args[2]);
+            return;
+          default:
+            help();
+        }
       default:
         help();
     }
   }
 
   private static void runProgram(String file) {
+    runProgram(file, file, "");
+  }
+
+  private static void runProgram(String file, String outputFile, String path) {
+
     try {
-      new Compiler(file).run();
+      if (!path.isEmpty()) {
+        String[] names = outputFile.split("/", 0);
+        String name = names[names.length - 1];
+        new Compiler(file, new OutputStreamWriter(new FileOutputStream(path + name + ".mp"))).run();
+      } else {
+        new Compiler(file).run();
+      }
     } catch (Exception e) {
       System.err.println("Failed to run the program:");
       System.err.println(e.getMessage());

@@ -173,4 +173,14 @@ public class ExecuteCGVisitor extends AbstractVisitor<Type, Definition> {
     generator.label(ifEndLabel);
     return null;
   }
+
+  @Override
+  public Type visit(Return ret, Definition param) {
+    generator.line(ret.getLine());
+    var funcDef = (FunctionDefinition) param;
+    generator.comments("Return");
+    ret.getReturnExpression().accept(valueVisitor, null);
+    generator.promoteTo(ret.getReturnExpression().getType(), funcDef.getType());
+    return null;
+  }
 }

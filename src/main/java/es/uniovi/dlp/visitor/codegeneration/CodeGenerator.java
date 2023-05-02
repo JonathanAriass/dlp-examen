@@ -211,10 +211,6 @@ public class CodeGenerator {
     write("ret\t" + returnSize + ", " + localVarsSize + ", " + paramsSize);
   }
 
-  //    public void add(Type type) {
-  //        write("add" + getTypeSuffix(type));
-  //    }
-
   public void promoteTo(Type from, Type to) {
     //    System.out.println("FROM:" + from + " | TO:" + to);
     if (from instanceof IntType) {

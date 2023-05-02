@@ -6,6 +6,7 @@ pair :: defstruct do
     character :: char
 end
 
+matrix :: [10 :: [10 :: int]]
 
 def p() :: void do
 end
@@ -18,7 +19,6 @@ def f(r :: double, e :: int) :: int do
     return c as int
 end
 
-matrix :: [10 :: [10 :: int]]
 
 def fill(row :: int, value :: int, increment :: int) :: void do
     i, inc :: int

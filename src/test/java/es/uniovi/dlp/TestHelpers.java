@@ -9,7 +9,6 @@ import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.parser.XanaLexer;
 import es.uniovi.dlp.parser.XanaParser;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 import org.antlr.v4.runtime.*;
 
@@ -111,7 +110,7 @@ public class TestHelpers {
 
   public static void runCompiler(String file) {
     try {
-      var compiler = new Compiler(file, new OutputStreamWriter(System.out));
+      var compiler = new Compiler(file);
       compiler.setReportErrors(false);
       compiler.run();
     } catch (IOException e) {

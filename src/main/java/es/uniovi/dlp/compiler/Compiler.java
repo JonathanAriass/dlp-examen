@@ -24,7 +24,8 @@ public class Compiler {
   private boolean showDebug = false;
 
   public Compiler(String filename) {
-    this.filename = filename;
+    //    this.filename = filename;
+    this(filename, new OutputStreamWriter(System.out));
   }
 
   public Compiler(String filename, OutputStreamWriter writer) {
