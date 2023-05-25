@@ -1,0 +1,8 @@
+def main() do
+    num::int
+
+    num = (1 < 2) ? 2 : 3
+
+    puts num
+
+end

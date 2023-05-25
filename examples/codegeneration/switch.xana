@@ -1,0 +1,16 @@
+def main() do
+    num::int
+    num = 5
+
+    switch(2){
+        case 1:
+            puts 'l'
+            break
+        case 5:
+            puts 'o'
+            break
+        default:
+            puts 'd'
+    }
+
+end

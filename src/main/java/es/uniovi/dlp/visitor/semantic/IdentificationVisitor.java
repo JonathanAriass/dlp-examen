@@ -45,6 +45,7 @@ public class IdentificationVisitor extends AbstractVisitor<Type, Type> {
   public Type visit(VarDefinition varDefinition, Type param) {
     if (st.findInCurrentScope(varDefinition.getName()) == null) {
       st.insert(varDefinition);
+      System.out.println("ENTRA");
     } else {
       ErrorManager.getInstance()
           .addError(

@@ -23,6 +23,8 @@ public interface Visitor<ReturnType, ParamType> {
 
   ReturnType visit(Return ret, ParamType param);
 
+  ReturnType visit(MasIgual mi, ParamType param);
+
   // VISITS PARA EXPRESIONES
   ReturnType visit(ArithmeticOperation op, ParamType param);
 
@@ -35,6 +37,8 @@ public interface Visitor<ReturnType, ParamType> {
   ReturnType visit(ComparisonOperation comp, ParamType param);
 
   ReturnType visit(DoubleLiteral doubleLit, ParamType param);
+
+  ReturnType visit(BooleanLiteral booleanLit, ParamType param);
 
   ReturnType visit(FieldAccess fieldAccess, ParamType param);
 
@@ -49,6 +53,8 @@ public interface Visitor<ReturnType, ParamType> {
   ReturnType visit(UnaryMinus unaryMinus, ParamType param);
 
   ReturnType visit(Variable variable, ParamType param);
+
+  ReturnType visit(TernaryOperator ternary, ParamType param);
 
   // VISITS PARA TIPOS
   ReturnType visit(Array array, ParamType param);
@@ -67,8 +73,14 @@ public interface Visitor<ReturnType, ParamType> {
 
   ReturnType visit(VoidType voidType, ParamType param);
 
+  ReturnType visit(BooleanType booleanType, ParamType param);
+
   // VISITS PARA DEFINITIONS
   ReturnType visit(FunctionDefinition functionDefinition, ParamType param);
 
   ReturnType visit(VarDefinition varDefinition, ParamType param);
+
+  ReturnType visit(Switch switchNode, ParamType param);
+
+  ReturnType visit(Case caseNode, ParamType param);
 }

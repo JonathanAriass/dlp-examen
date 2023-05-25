@@ -26,3 +26,16 @@ Este es el proyecto base que servirá para implementar un compilador durante el 
 
 - Profesor de laboratorio: [Luis Emilio Velasco Sánchez](https://emibloque.me) ([velascoluis@uniovi.es](mailto:velascoluis@uniovi.es))
 - Coordinador de la asignatura: [Francisco Ortín Soler](http://www.reflection.uniovi.es/ortin/)
+
+## Como usar
+> Compilar un programa y mostrar salida de generacion de codigo por consola
+
+Habra que ejecutar el siguiente comando -> `$ ./bin/xana.sh [programa.xana]`
+
+> Misma operacion pero guardando el resultado en otro otro directorio con mismo nombre de archivo + .xana.mp
+
+Habra que ejecutar el siguiente comando -> `$ ./bin/xana.sh [programa.xana] -d [dir]`
+
+> Ejecutar codigo para un programa con codigo maquina
+
+Habra que ejecutar el siguiente comando -> `$ mono mapl/TextVM.exe [programa.xana.mp]`

@@ -35,7 +35,8 @@ def_variables returns[List<VarDefinition> ast = new ArrayList<>()]:
 simpleType returns[Type ast]:
     tp='int' {$ast = new IntType($tp.getLine(), $tp.getCharPositionInLine() + 1);}
     | tp='double' {$ast = new DoubleType($tp.getLine(), $tp.getCharPositionInLine() + 1);}
-    | tp='char' {$ast = new CharType($tp.getLine(), $tp.getCharPositionInLine() + 1);};
+    | tp='char' {$ast = new CharType($tp.getLine(), $tp.getCharPositionInLine() + 1);}
+    | tp='boolean' {$ast = new BooleanType($tp.getLine(), $tp.getCharPositionInLine() + 1);};
 
 type returns[Type ast]:
         simpleType {$ast = $simpleType.ast;}
@@ -123,7 +124,16 @@ statement returns[List<Statement> ast = new ArrayList<>()]:
             $ast.add(new Write(expression.ast, expression.ast.getLine(), expression.ast.getColumn()));
         }
     }
+    | leftExp=expression '+=' rightExp=expression {$ast.add(new MasIgual($leftExp.ast, $rightExp.ast, $start.getLine(), $start.getCharPositionInLine() + 1));}
     | leftExp=expression '=' rightExp=expression {$ast.add(new Assignment($leftExp.ast, $rightExp.ast, $start.getLine(), $start.getCharPositionInLine() + 1));}
+    | 'switch' '('expression')''{' cs+=case* ('default'':' statement) '}' {
+        List<Case> cases = new ArrayList<>();
+        for (var caseNode : $cs) {
+            cases.add(caseNode.ast);
+        }
+
+        $ast.add(new Switch($expression.ast, cases, $statement.ast, $start.getLine(), $start.getCharPositionInLine() + 1));
+    }
     | 'while' expression 'do' stms+=statement* 'end' {
         List<Statement> statements = new ArrayList<>();
         for(var stm : $stms) {
@@ -133,6 +143,12 @@ statement returns[List<Statement> ast = new ArrayList<>()]:
     }
     | 'return' expression {$ast.add(new Return($expression.ast, $expression.ast.getLine(), $expression.ast.getColumn()));};
 
+case returns [Case ast]: {Expression exp;}
+    'case' (CHAR_CONSTANT {exp = new CharLiteral(LexerHelper.lexemeToChar($CHAR_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | INT_CONSTANT {exp = new IntLiteral(LexerHelper.lexemeToInt($INT_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | REAL_CONSTANT {exp = new DoubleLiteral(LexerHelper.lexemeToReal($REAL_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);})
+    ':' statement  {$ast = new Case($statement.ast, exp, false, exp.getLine(), exp.getColumn());} ('break'{$ast.breakPoint = true;})?;
+
 expression returns[Expression ast]:
     ident=ID '(' argument ')' {$ast = new Invocation(new Variable($ident.text, $ident.getLine(), $ident.getCharPositionInLine()+1), $argument.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | '(' e=expression ')' {$ast = $e.ast;}
@@ -141,11 +157,14 @@ expression returns[Expression ast]:
     | e=expression 'as' simpleType {$ast = new Cast($simpleType.ast, $e.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | '-' e=expression {$ast = new UnaryMinus($e.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | '!' e=expression {$ast = new Negation($e.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
+    | '(' e1=expression ')' '?' e2=expression ':' e3=expression {$ast = new TernaryOperator($e1.ast, $e2.ast, $e3.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | left=expression oper=('*' | '/' | '%') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $start.getLine(), $start.getCharPositionInLine() + 1);}
     | left=expression oper=('+' | '-') right=expression {$ast = new ArithmeticOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
     | left=expression oper=('>' | '>=' | '<' | '<=' | '!=' | '==') right=expression {$ast = new ComparisonOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
     | left=expression oper=('&&' | '||') right=expression {$ast = new LogicalOperation($oper.text, $left.ast, $right.ast, $oper.getLine(), $oper.getCharPositionInLine() + 1);}
     | ident=ID {$ast = new Variable($ident.text, $ident.getLine(), $ident.getCharPositionInLine() + 1);}
+    | value='true' {$ast = new BooleanLiteral(true, $value.getLine(), $value.getCharPositionInLine() + 1);}
+    | value='false' {$ast = new BooleanLiteral(false, $value.getLine(), $value.getCharPositionInLine() + 1);}
     | INT_CONSTANT {$ast = new IntLiteral(LexerHelper.lexemeToInt($INT_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
     | REAL_CONSTANT {$ast = new DoubleLiteral(LexerHelper.lexemeToReal($REAL_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);}
     | CHAR_CONSTANT {$ast = new CharLiteral(LexerHelper.lexemeToChar($CHAR_CONSTANT.text), $start.getLine(), $start.getCharPositionInLine() + 1);};
@@ -182,6 +201,8 @@ REAL_CONSTANT: REAL | REAL'E'('+'|'-')?[0-9]+ | REAL'E'('+'|'-')?REAL_CONSTANT |
 ID: [a-zA-Z_][0-9a-zA-Z_]*;
 
 CHAR_CONSTANT: '\''.'\'' | '\'\\'(INT | [nt])'\'';
+
+BOLEAN_CONST: 'true' | 'false' | '1' | '0';
 
 // Con el operador ? lo que trabajamos es con la version non-greedy del '*'
 COMENTARIO_SIMPLE: ('#' .*? ('\n' | EOF)) -> skip;

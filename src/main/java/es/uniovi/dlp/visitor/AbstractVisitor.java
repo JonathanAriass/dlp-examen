@@ -82,6 +82,16 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   }
 
   @Override
+  public ReturnType visit(BooleanLiteral booleanLit, ParamType param) {
+    return null;
+  }
+
+  @Override
+  public ReturnType visit(BooleanType booleanType, ParamType param) {
+    return null;
+  }
+
+  @Override
   public ReturnType visit(ComparisonOperation comp, ParamType param) {
     comp.getLeftExpression().accept(this, param);
     comp.getRightExpression().accept(this, param);
@@ -194,6 +204,35 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   @Override
   public ReturnType visit(VarDefinition varDefinition, ParamType param) {
     varDefinition.getType().accept(this, param);
+    return null;
+  }
+
+  @Override
+  public ReturnType visit(Switch switchNode, ParamType param) {
+    switchNode.getExpression().accept(this, param);
+    switchNode.getCases().forEach(caseNode -> caseNode.accept(this, param));
+    return null;
+  }
+
+  @Override
+  public ReturnType visit(Case caseNode, ParamType param) {
+    caseNode.getExpression().accept(this, param);
+    caseNode.getStatements().forEach(statement -> statement.accept(this, param));
+    return null;
+  }
+
+  @Override
+  public ReturnType visit(MasIgual mi, ParamType param) {
+    mi.getLeftExpression().accept(this, param);
+    mi.getRightExpression().accept(this, param);
+    return null;
+  }
+
+  @Override
+  public ReturnType visit(TernaryOperator ternary, ParamType param) {
+    ternary.getExpr1().accept(this, param);
+    ternary.getExpr2().accept(this, param);
+    ternary.getExpr3().accept(this, param);
     return null;
   }
 }

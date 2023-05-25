@@ -17,7 +17,10 @@ public class CharType extends AbstractType {
 
   @Override
   public Type cast(Type type) {
-    if (type instanceof IntType || type instanceof CharType || type instanceof DoubleType) {
+    if (type instanceof IntType
+        || type instanceof CharType
+        || type instanceof DoubleType
+        || type instanceof BooleanType) {
       return type;
     }
     return super.cast(type);

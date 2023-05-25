@@ -100,12 +100,9 @@ label1:
 
 #line 	10
 	' If statement
+	pushf	1.5
 	pushf	1.0
-	push	bp
-	pushi	-4
-	addi
-	loadf
-	eqf
+	gtf
 	jz	label2
 	' Body of the if branch
 

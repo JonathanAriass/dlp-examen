@@ -49,6 +49,7 @@ public class CodeGenerator {
   }
 
   public void label(int label) {
+    System.out.println("LABEL LLEGADA:" + label);
     write("label" + label + ":", false);
   }
 

@@ -175,12 +175,67 @@ public class ExecuteCGVisitor extends AbstractVisitor<Type, Definition> {
   }
 
   @Override
+  public Type visit(Switch switchNode, Definition param) {
+    generator.line(switchNode.getLine());
+    generator.comments("Switch");
+    int switchEndLabel = generator.getLabel();
+    System.out.println(switchEndLabel);
+    switchNode
+        .getCases()
+        .forEach(
+            caseNode -> {
+              int labelCase = generator.getLabel();
+              System.out.println("label cada case" + labelCase);
+              caseNode.setLabelCase(labelCase);
+              generator.label(labelCase);
+              switchNode.getExpression().accept(valueVisitor, null);
+              caseNode.accept(this, param);
+              caseNode.setFinalSwitchLabel(switchEndLabel);
+            });
+
+    int labelDefault = generator.getLabel();
+    generator.label(labelDefault);
+    switchNode.getStatement().forEach(statement -> statement.accept(this, param));
+    generator.label(switchEndLabel);
+    return null;
+  }
+
+  @Override
+  public Type visit(Case caseNode, Definition param) {
+    //    generator.label(caseNode.getLine());
+    caseNode.getExpression().accept(valueVisitor, null);
+    generator.comparison("==", caseNode.getExpression().getType());
+    generator.jz(caseNode.getLabelCase() + 1);
+    System.out.println("JZ" + Integer.toString(caseNode.getLabelCase() + 1));
+    caseNode.getStatements().forEach(statement -> statement.accept(this, param));
+    if (caseNode.breakPoint) generator.jmp(caseNode.getFinalSwitchLabel());
+    return null;
+  }
+
+  @Override
   public Type visit(Return ret, Definition param) {
     generator.line(ret.getLine());
     var funcDef = (FunctionDefinition) param;
     generator.comments("Return");
     ret.getReturnExpression().accept(valueVisitor, null);
     generator.promoteTo(ret.getReturnExpression().getType(), funcDef.getType());
+
+    return null;
+  }
+
+  @Override
+  public Type visit(MasIgual mi, Definition param) {
+    generator.line(mi.getLine());
+    generator.comments("MasIgual");
+    mi.getLeftExpression()
+        .accept(
+            addressVisitor, null); // montamos el valor de la direccion de la izquierda en la pila
+    mi.getRightExpression()
+        .accept(valueVisitor, null); // montamos el valor de la derecha en la pila
+    mi.getLeftExpression()
+        .accept(valueVisitor, null); // montamos el valor de la izquierda en la pila
+    generator.arithmetic("+", mi.getLeftExpression().getType());
+    generator.store(mi.getLeftExpression().getType()); // Almacenamos el valor en la direccion
     return null;
   }
 }

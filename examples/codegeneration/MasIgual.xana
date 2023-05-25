@@ -1,0 +1,10 @@
+def main() do
+    num::int
+
+    num = 5
+
+    num += 4
+
+    puts num
+
+end

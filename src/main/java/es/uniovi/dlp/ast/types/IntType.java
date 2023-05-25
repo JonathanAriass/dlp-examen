@@ -18,7 +18,10 @@ public class IntType extends AbstractType {
 
   @Override
   public Type cast(Type type) {
-    if (type instanceof IntType || type instanceof CharType || type instanceof DoubleType) {
+    if (type instanceof IntType
+        || type instanceof CharType
+        || type instanceof DoubleType
+        || type instanceof BooleanType) {
       return type;
     }
     return super.cast(type);
@@ -59,7 +62,7 @@ public class IntType extends AbstractType {
 
   @Override
   public Type logical(Type type) {
-    if (type instanceof IntType) {
+    if (type instanceof IntType || type instanceof BooleanType) {
       return type;
     }
     return super.logical(type);

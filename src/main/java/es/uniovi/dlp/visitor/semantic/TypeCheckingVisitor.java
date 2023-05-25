@@ -315,4 +315,39 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Type> {
     doubleLit.setType(new DoubleType(doubleLit.getLine(), doubleLit.getColumn()));
     return null;
   }
+
+  @Override
+  public Type visit(BooleanLiteral booleanLit, Type param) {
+    super.visit(booleanLit, param);
+    booleanLit.setType(
+        new BooleanType(
+            booleanLit.getLine(), booleanLit.getColumn())); // Se hace como int porque es un int
+    return null;
+  }
+
+  @Override
+  public Type visit(Switch switchNode, Type param) {
+    switchNode.getExpression().accept(this, param);
+    switchNode.getExpression().setType(switchNode.getExpression().getType());
+    switchNode.getCases().forEach(caseNode -> caseNode.accept(this, param));
+    return null;
+  }
+
+  @Override
+  public Type visit(Case caseNode, Type param) {
+    caseNode.getExpression().accept(this, param);
+    caseNode.getStatements().forEach(statement -> statement.accept(this, param));
+    return null;
+  }
+
+  @Override
+  public Type visit(TernaryOperator ternary, Type param) {
+    ternary.getExpr1().accept(this, param);
+    ternary.getExpr2().accept(this, param);
+    ternary.getExpr3().accept(this, param);
+    if (ternary.getExpr2().getType().promotableTo(ternary.getExpr3().getType())) {
+      ternary.setType(ternary.getExpr2().getType());
+    }
+    return null;
+  }
 }

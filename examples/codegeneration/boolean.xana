@@ -1,0 +1,12 @@
+def main() do
+    num::boolean
+
+    num = true
+
+    if num == false do
+        puts 'f'
+    else
+        puts 't'
+    end
+
+end

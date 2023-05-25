@@ -3,6 +3,7 @@ package es.uniovi.dlp.visitor.codegeneration;
 import es.uniovi.dlp.ast.Expression;
 import es.uniovi.dlp.ast.Type;
 import es.uniovi.dlp.ast.expressions.*;
+import es.uniovi.dlp.ast.types.IntType;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class ValueCGVisitor extends AbstractVisitor<Type, Type> {
@@ -51,6 +52,12 @@ public class ValueCGVisitor extends AbstractVisitor<Type, Type> {
   public Type visit(IntLiteral intLiteral, Type param) {
     generator.push(intLiteral.getType(), intLiteral.getValue());
     return null;
+  }
+
+  @Override
+  public Type visit(BooleanLiteral booleanLit, Type param) {
+    generator.push(new IntType(0, 0), booleanLit.getValue());
+    return super.visit(booleanLit, param);
   }
 
   @Override
@@ -110,6 +117,20 @@ public class ValueCGVisitor extends AbstractVisitor<Type, Type> {
   public Type visit(Invocation functionInvocation, Type param) {
     for (Expression expression : functionInvocation.getArgs()) expression.accept(this, null);
     generator.call(functionInvocation.getName().getName());
+    return null;
+  }
+
+  @Override
+  public Type visit(TernaryOperator ternary, Type param) {
+    int labelLeft = generator.getLabel();
+    int labelEnd = generator.getLabel();
+    ternary.getExpr1().accept(this, param); // Evaluamos condicion
+    generator.jz(labelLeft);
+    ternary.getExpr2().accept(this, param);
+    generator.jmp(labelEnd);
+    generator.label(labelLeft);
+    ternary.getExpr3().accept(this, param);
+    generator.label(labelEnd);
     return null;
   }
 }
